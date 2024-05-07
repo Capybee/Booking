@@ -9,7 +9,8 @@
         WindowStyle="None"
         WindowState="Maximized"
         ResizeMode="NoResize"
-        Title="MainWindow" Height="1080" Width="1920">
+        
+        Title="MainWindow" Height="1080" Width="1920" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>

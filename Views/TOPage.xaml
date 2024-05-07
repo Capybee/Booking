@@ -9,7 +9,7 @@
       Title="TOPage">
 
     <Grid Style="{DynamicResource UpGridStyle}">
-        <TabControl>
+        <TabControl FontSize="22">
             <TabItem Header="Мероприятия" Style="{DynamicResource TabItemStyle}">
                 <Grid Style="{DynamicResource GridStyle}">
                     <DataGrid Style="{DynamicResource DataGridStyle}">

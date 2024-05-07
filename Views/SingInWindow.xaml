@@ -19,11 +19,9 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="40"/>
-                <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Margin="140,0,0,0" Text="Авторизация" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
             <Button Style="{DynamicResource UpButtonStyle}" x:Name="Btn_RollUp" Grid.Column="1" Content="_" Click="Btn_RollUp_Click"/>
-            <Button x:Name="Btn_Unwrap" Grid.Column="2" Content="🞎" Style="{DynamicResource UpButtonStyle}" Click="Btn_Unwrap_Click"/>
             <Button x:Name="Btn_Close" Grid.Column="3" Content="X" Style="{DynamicResource UpButtonStyle}" Click="Btn_Close_Click"/>
         </Grid>
         <Grid Grid.Row="1" Style="{DynamicResource GridStyle}">
@@ -32,9 +30,9 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="TB_Login" Grid.Row="0" Style="{DynamicResource TextBoxStyle}" Width="500" Height="45" FontSize="22" GotFocus="MyGotFocus" LostFocus="MyLostFocus"/>
-            <TextBox x:Name="TB_Password" Grid.Row="1" Style="{DynamicResource TextBoxStyle}" Width="500" Height="45" FontSize="22" GotFocus="MyGotFocus" LostFocus="MyLostFocus"/>
-            <Button x:Name="Btn_Enter" Grid.Row="2" Style="{DynamicResource ButtonStyle}" Width="200" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Content="Войти"/>
+            <TextBox x:Name="TB_Login" Grid.Row="0" VerticalContentAlignment="Center" Style="{DynamicResource TextBoxStyle}" Width="500" Height="45" FontSize="22" GotFocus="LoginGotFocus" LostFocus="LoginLostFocus"/>
+            <TextBox x:Name="TB_Password" Grid.Row="1" VerticalContentAlignment="Center" Style="{DynamicResource TextBoxStyle}" Width="500" Height="45" FontSize="22" GotFocus="PasswordGotFocus" LostFocus="PasswordLostFocus"/>
+            <Button x:Name="Btn_Enter" Grid.Row="2" Style="{DynamicResource ButtonStyle}" Width="200" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Content="Войти" Click="Btn_Enter_Click"/>
         </Grid>
     </Grid>
 </Window>

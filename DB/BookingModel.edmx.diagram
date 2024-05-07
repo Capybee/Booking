@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="70eeb900de0f4c9fbbf13d2c3647ae93" Name="Diagram1">
+        <EntityTypeShape EntityType="DB_BookingModel.Admin" Width="1.5" PointX="0.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_BookingModel.Event" Width="1.5" PointX="8.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_BookingModel.Hall" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_BookingModel.Request" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_BookingModel.TO" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_BookingModel.User" Width="1.5" PointX="6" PointY="4.125" IsExpanded="true" />
+        <AssociationConnector Association="DB_BookingModel.FK_Request_Admin" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_BookingModel.FK_User_Admin" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_BookingModel.FK_Event_Hall" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_BookingModel.FK_Event_User" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_BookingModel.FK_Request_Hall" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_BookingModel.FK_Request_User" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_BookingModel.FK_User_TO" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

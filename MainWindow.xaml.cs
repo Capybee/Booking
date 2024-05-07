@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Booking.DB;
 using Booking.Views;
 
 namespace Booking
@@ -21,16 +22,45 @@ namespace Booking
     /// </summary>
     public partial class MainWindow : Window
     {
+        public string AccessData = "";
+        public object ReturnedInstance;
+        private Admin AdminInstance;
+        private User UserInstance;
+        private TO TOInstance;
+
         public MainWindow()
         {
             InitializeComponent();
-            SingInWindow SingInWindowInstance = new SingInWindow();
-            SingInWindowInstance.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            SingInWindowInstance.Topmost = true;
-            SingInWindowInstance.Show();
-            Frame_Main.Navigate(new UserPage());
+            Frame_Main.Navigate(new EmptyPage());
+            Frame_Main.NavigationUIVisibility = NavigationUIVisibility.Hidden;
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            SingInWindow SingInWindowInstance = new SingInWindow(this);
+            SingInWindowInstance.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            SingInWindowInstance.Topmost = true;
+            if (SingInWindowInstance.ShowDialog() == true)
+            {
+                if (AccessData == "Администратор")
+                {
+                    AdminInstance = ReturnedInstance as Admin;
+                    Frame_Main.Navigate(new AdminPage());
+                }
+                else if (AccessData == "Пользователь")
+                {
+                    UserInstance = ReturnedInstance as User;
+                    Frame_Main.Navigate(new UserPage());
+                }
+                else if (AccessData == "ТО")
+                {
+                    TOInstance = ReturnedInstance as TO;
+                    Frame_Main.Navigate(new TOPage());
+                }
+            }
+        }
+
+        //Кнопки состояния
         private void Btn_Close_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -49,5 +79,6 @@ namespace Booking
         {
             this.WindowState = WindowState.Minimized;
         }
+
     }
 }
