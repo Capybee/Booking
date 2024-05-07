@@ -1,0 +1,40 @@
+﻿<Window x:Class="Booking.Views.SingInWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Booking.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Title="SingInWindow" Height="300" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Style="{DynamicResource UpGridStyle}" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Margin="140,0,0,0" Text="Авторизация" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
+            <Button Style="{DynamicResource UpButtonStyle}" x:Name="Btn_RollUp" Grid.Column="1" Content="_" Click="Btn_RollUp_Click"/>
+            <Button x:Name="Btn_Unwrap" Grid.Column="2" Content="🞎" Style="{DynamicResource UpButtonStyle}" Click="Btn_Unwrap_Click"/>
+            <Button x:Name="Btn_Close" Grid.Column="3" Content="X" Style="{DynamicResource UpButtonStyle}" Click="Btn_Close_Click"/>
+        </Grid>
+        <Grid Grid.Row="1" Style="{DynamicResource GridStyle}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="TB_Login" Grid.Row="0" Style="{DynamicResource TextBoxStyle}" Width="500" Height="45" FontSize="22" GotFocus="MyGotFocus" LostFocus="MyLostFocus"/>
+            <TextBox x:Name="TB_Password" Grid.Row="1" Style="{DynamicResource TextBoxStyle}" Width="500" Height="45" FontSize="22" GotFocus="MyGotFocus" LostFocus="MyLostFocus"/>
+            <Button x:Name="Btn_Enter" Grid.Row="2" Style="{DynamicResource ButtonStyle}" Width="200" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Content="Войти"/>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,222 @@
+﻿<Page x:Class="Booking.Views.UserPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Booking.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="1080" d:DesignWidth="1880"
+      Title="UserPage">
+
+    <Grid Style="{DynamicResource UpGridStyle}">
+        <TabControl FontSize="22">
+            <TabItem Style="{DynamicResource TabItemStyle}" Header="Малый зал">
+                <Grid Style="{DynamicResource GridStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border BorderThickness="0,0,1,0" BorderBrush="Black">
+                        <Grid Grid.Column="0">
+                            <DataGrid Style="{DynamicResource DataGridStyle}" FontSize="22">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Время начала мероприятия" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Бронирование зала" Padding="10,10, 10,10" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>
+                        <TextBox Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center" GotFocus="Tb_EventTitle_GotFocus" LostFocus="Tb_EventTitle_LostFocus" x:Name="Tb_EventTitle" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="1200" Height="45" />
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Начало мероприятия" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
+                            <TextBox x:Name="TB_StartTime" IsReadOnly="True" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="600" Height="45" Style="{DynamicResource TextBoxStyle}"/>
+                            <TextBlock Text="Время окончания мероприятия" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0"/>
+                            <ComboBox x:Name="CB_EndTime" Grid.Column="1" Grid.Row="1" Width="600" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ComboBoxStyle}"/>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="TB_AdditionalEquipment" Margin="20" Style="{DynamicResource TextBoxStyle}" Padding="20" GotFocus="TB_AdditionalEquipment_GotFocus" LostFocus="TB_AdditionalEquipment_LostFocus"/>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Style="{DynamicResource ButtonStyle}" x:Name="Btn_AddFile" Grid.Column="0" Content="Добавить" Margin="5" VerticalContentAlignment="Center"/>
+                                    <Button Style="{DynamicResource ButtonStyle}" x:Name="Btn_DeleteFile" Grid.Column="1" Content="Удалить" Margin="5" VerticalContentAlignment="Center"/>
+                                </Grid>
+                                <DataGrid Grid.Row="1" Style="{DynamicResource DataGridStyle}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Файл" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Grid>
+                        <Button x:Name="Btn_SendRequest" Grid.Row="4" Content="Забронировать" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle}" Width="200" Height="45"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Большой зал" Style="{DynamicResource TabItemStyle}">
+                <Grid Style="{DynamicResource GridStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border BorderThickness="0,0,1,0" BorderBrush="Black">
+                        <Grid Grid.Column="0">
+                            <DataGrid Style="{DynamicResource DataGridStyle}" FontSize="22">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Время начала мероприятия" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Бронирование зала" Padding="10,10, 10,10" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>
+                        <TextBox Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center" GotFocus="Tb_EventTitle_GotFocus" LostFocus="Tb_EventTitle_LostFocus" x:Name="Tb_EventTitleBig" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="1200" Height="45" />
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Начало мероприятия" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
+                            <TextBox x:Name="TB_StartTimeBig" IsReadOnly="True" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="600" Height="45" Style="{DynamicResource TextBoxStyle}"/>
+                            <TextBlock Text="Время окончания мероприятия" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0"/>
+                            <ComboBox x:Name="CB_EndTimeBig" Grid.Column="1" Grid.Row="1" Width="600" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ComboBoxStyle}"/>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="TB_AdditionalEquipmentBig" Margin="20" Style="{DynamicResource TextBoxStyle}" Padding="20" GotFocus="TB_AdditionalEquipment_GotFocus" LostFocus="TB_AdditionalEquipment_LostFocus"/>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Style="{DynamicResource ButtonStyle}" x:Name="Btn_AddFileBig" Grid.Column="0" Content="Добавить" Margin="5" VerticalContentAlignment="Center"/>
+                                    <Button Style="{DynamicResource ButtonStyle}" x:Name="Btn_DeleteFileBig" Grid.Column="1" Content="Удалить" Margin="5" VerticalContentAlignment="Center"/>
+                                </Grid>
+                                <DataGrid Grid.Row="1" Style="{DynamicResource DataGridStyle}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Файл" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Grid>
+                        <Button x:Name="Btn_SendRequestBig" Grid.Row="4" Content="Забронировать" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle}" Width="200" Height="45"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Вип зал" Style="{DynamicResource TabItemStyle}">
+                <Grid Style="{DynamicResource GridStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border BorderThickness="0,0,1,0" BorderBrush="Black">
+                        <Grid Grid.Column="0">
+                            <DataGrid Style="{DynamicResource DataGridStyle}" FontSize="22">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Время начала мероприятия" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Бронирование зала" Padding="10,10, 10,10" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>
+                        <TextBox Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center" GotFocus="Tb_EventTitle_GotFocus" LostFocus="Tb_EventTitle_LostFocus" x:Name="Tb_EventTitleVip" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="1200" Height="45" />
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Начало мероприятия" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
+                            <TextBox x:Name="TB_StartTimeVip" IsReadOnly="True" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="600" Height="45" Style="{DynamicResource TextBoxStyle}"/>
+                            <TextBlock Text="Время окончания мероприятия" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0"/>
+                            <ComboBox x:Name="CB_EndTimeVip" Grid.Column="1" Grid.Row="1" Width="600" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ComboBoxStyle}"/>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="TB_AdditionalEquipmentVip" Margin="20" Style="{DynamicResource TextBoxStyle}" Padding="20" GotFocus="TB_AdditionalEquipment_GotFocus" LostFocus="TB_AdditionalEquipment_LostFocus"/>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Style="{DynamicResource ButtonStyle}" x:Name="Btn_AddFileVip" Grid.Column="0" Content="Добавить" Margin="5" VerticalContentAlignment="Center"/>
+                                    <Button Style="{DynamicResource ButtonStyle}" x:Name="Btn_DeleteFileVip" Grid.Column="1" Content="Удалить" Margin="5" VerticalContentAlignment="Center"/>
+                                </Grid>
+                                <DataGrid Grid.Row="1" Style="{DynamicResource DataGridStyle}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Файл" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Grid>
+                        <Button x:Name="Btn_SendRequestVip" Grid.Row="4" Content="Забронировать" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle}" Width="200" Height="45"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Page>
