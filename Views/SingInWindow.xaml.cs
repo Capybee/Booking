@@ -84,7 +84,7 @@ namespace Booking.Views
             this.WindowState = WindowState.Minimized;
         }
 
-        //Дополнительные методы
+        //Методы
         private bool IsChecked()
         {
             if (string.IsNullOrEmpty(TB_Login.Text))
@@ -121,8 +121,7 @@ namespace Booking.Views
             return true;
         }
 
-        //Обработка событий нажатия на кнопку
-        private void Btn_Enter_Click(object sender, RoutedEventArgs e)
+        private void Authorization()
         {
             List<Admin> Admins = new List<Admin>();
             Admins = Entities.Admin.ToList();
@@ -147,6 +146,7 @@ namespace Booking.Views
                     _MainWindowInstance.ReturnedInstance = admin;
                     this.DialogResult = true;
                     this.Close();
+                    return;
                 }
             }
 
@@ -158,6 +158,7 @@ namespace Booking.Views
                     _MainWindowInstance.ReturnedInstance = user;
                     this.DialogResult = true;
                     this.Close();
+                    return;
                 }
             }
 
@@ -169,8 +170,30 @@ namespace Booking.Views
                     _MainWindowInstance.ReturnedInstance = to;
                     this.DialogResult = true;
                     this.Close();
+                    return;
                 }
             }
+
+            MessageBox.Show("Логин или пароль не верны!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        //Обработка событий кнопок
+        private void Btn_Enter_Click(object sender, RoutedEventArgs e)
+        {
+            Authorization();
+        }
+
+        //События кликов
+        private void TB_Password_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                Authorization();
+        }
+
+        private void TB_Login_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+                TB_Password.Focus();
         }
     }
 }

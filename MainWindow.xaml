@@ -18,15 +18,17 @@
         </Grid.RowDefinitions>
         <Grid Style="{DynamicResource UpGridStyle}" Grid.Row="0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="МАУ 'ЦОЗИ' Бронирование" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
-            <Button Style="{DynamicResource UpButtonStyle}" x:Name="Btn_RollUp" Grid.Column="1" Content="_" Click="Btn_RollUp_Click"/>
-            <Button x:Name="Btn_Unwrap" Grid.Column="2" Content="🞎" Style="{DynamicResource UpButtonStyle}" Click="Btn_Unwrap_Click"/>
-            <Button x:Name="Btn_Close" Grid.Column="3" Content="X" Style="{DynamicResource UpButtonStyle}" Click="Btn_Close_Click"/>
+            <Button x:Name="Btn_BackOrSingIn" Grid.Column="0" Style="{DynamicResource UpButtonStyle}" FontSize="22" Content="Войти" Height="40" Click="Btn_BackOrSingIn_Click"/>
+            <TextBlock Grid.Column="1" Text="МАУ 'ЦОЗИ' Бронирование" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
+            <Button Style="{DynamicResource UpButtonStyle}" x:Name="Btn_RollUp" Grid.Column="2" Content="_" Click="Btn_RollUp_Click"/>
+            <Button x:Name="Btn_Unwrap" Grid.Column="3" Content="🞎" Style="{DynamicResource UpButtonStyle}" Click="Btn_Unwrap_Click"/>
+            <Button x:Name="Btn_Close" Grid.Column="4" Content="X" Style="{DynamicResource UpButtonStyle}" Click="Btn_Close_Click"/>
         </Grid>
         <Frame Grid.Row="1" x:Name="Frame_Main"/>
     </Grid>

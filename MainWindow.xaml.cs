@@ -27,6 +27,7 @@ namespace Booking
         private Admin AdminInstance;
         private User UserInstance;
         private TO TOInstance;
+        private bool IsAuthorized = false;
 
         public MainWindow()
         {
@@ -37,6 +38,12 @@ namespace Booking
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Authorization();
+        }
+
+        //Методы
+        private void Authorization()
+        {
             SingInWindow SingInWindowInstance = new SingInWindow(this);
             SingInWindowInstance.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             SingInWindowInstance.Topmost = true;
@@ -45,17 +52,23 @@ namespace Booking
                 if (AccessData == "Администратор")
                 {
                     AdminInstance = ReturnedInstance as Admin;
-                    Frame_Main.Navigate(new AdminPage());
+                    Frame_Main.Navigate(new AdminPage(AdminInstance));
+                    Btn_BackOrSingIn.Content = "Выйти";
+                    IsAuthorized = true;
                 }
                 else if (AccessData == "Пользователь")
                 {
                     UserInstance = ReturnedInstance as User;
                     Frame_Main.Navigate(new UserPage());
+                    Btn_BackOrSingIn.Content = "Выйти";
+                    IsAuthorized = true;
                 }
                 else if (AccessData == "ТО")
                 {
                     TOInstance = ReturnedInstance as TO;
                     Frame_Main.Navigate(new TOPage());
+                    Btn_BackOrSingIn.Content = "Выйти";
+                    IsAuthorized = true;
                 }
             }
         }
@@ -68,11 +81,21 @@ namespace Booking
 
         private void Btn_Unwrap_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Normal;
-            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            this.Width = 1280;
-            this.Height = 720;
-            this.ResizeMode = ResizeMode.CanResize;
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                this.Width = 1280;
+                this.Height = 720;
+                this.ResizeMode = ResizeMode.CanResize;
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+                this.Width = 1920;
+                this.Height = 1080;
+                this.ResizeMode = ResizeMode.NoResize;
+            }
         }
 
         private void Btn_RollUp_Click(object sender, RoutedEventArgs e)
@@ -80,5 +103,19 @@ namespace Booking
             this.WindowState = WindowState.Minimized;
         }
 
+        //Обработка нажатий
+        private void Btn_BackOrSingIn_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsAuthorized) 
+            {
+                Frame_Main.NavigationService.GoBack();
+                Btn_BackOrSingIn.Content = "Войти";
+                IsAuthorized = false;
+            }
+            else
+            {
+                Authorization();
+            }
+        }
     }
 }

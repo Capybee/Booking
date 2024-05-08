@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Booking.DB;
+using Booking.MyClasses;
 
 namespace Booking.Views
 {
@@ -20,14 +22,43 @@ namespace Booking.Views
     /// </summary>
     public partial class AdminPage : Page
     {
-        SolidColorBrush MyBrush = (SolidColorBrush)Application.Current.Resources["PlaceholderGrey"];
+        readonly SolidColorBrush MyBrush = (SolidColorBrush)Application.Current.Resources["PlaceholderGrey"];
+        private Admin ThisAdmin;
+        private List<Admin> Admins;
+        private List<User> Users;
+        private List<TO> TOCollection;
+        private DB_BookingEntities Entities = new DB_BookingEntities();
+        private List<UsersCollection> UsersCollectionInstance = new List<UsersCollection>();
 
-        public AdminPage()
+        public AdminPage(Admin AdminInstance)
         {
             InitializeComponent();
+            ThisAdmin = AdminInstance;
+            Admins = Entities.Admin.ToList();
+            Users = Entities.User.ToList();
+            TOCollection = Entities.TO.ToList();
+            ConvertToUsersCollection();
+            DG_Users.ItemsSource = UsersCollectionInstance;
         }
 
-        //Методы PlaceHolder-а
+        //Методы
+        private void ConvertToUsersCollection()
+        {
+            foreach (var user in Users)
+            {
+                UsersCollectionInstance.Add(new UsersCollection(user.FIO, "Пользователь"));
+            }
+            foreach (var admin in Admins)
+            {
+                UsersCollectionInstance.Add(new UsersCollection(admin.FIO, "Администратор"));
+            }
+            foreach (var to in TOCollection)
+            {
+                UsersCollectionInstance.Add(new UsersCollection(to.FIO, "ТО"));
+            }
+        }
+
+        //Placeholder
         private void FIOGotFocus(object sender, RoutedEventArgs e)
         {
             if (TB_FIO.Text == "Введите ФИО пользователя")
@@ -135,7 +166,7 @@ namespace Booking.Views
             }
         }
 
-
+        //Обработка нажатий
         private void Btn_Add_Click(object sender, RoutedEventArgs e)
         {
             MyLostFocus();
