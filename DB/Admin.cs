@@ -18,9 +18,16 @@ namespace Booking.DB
         public Admin()
         {
             this.Request = new HashSet<Request>();
-            this.User = new HashSet<User>();
         }
-    
+
+        public Admin(string ExternalFIO, string ExternalLogin, string ExternalPassword)
+        {
+            this.Request = new HashSet<Request>();
+            FIO = ExternalFIO;
+            Login = ExternalLogin;
+            Password = ExternalPassword;
+        }
+
         public int Id { get; set; }
         public string FIO { get; set; }
         public string Login { get; set; }
@@ -28,7 +35,5 @@ namespace Booking.DB
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Request { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> User { get; set; }
     }
 }

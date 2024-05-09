@@ -69,17 +69,29 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="ФИО" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock Text="Логин" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1"/>
                         <TextBlock Text="Пароль" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock Text="Должность" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="3"/>
+                        <TextBlock Text="Роль" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="3"/>
+                        <TextBlock Text="Должность" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="4"/>
                         <TextBox x:Name="TB_FIO" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="700" Height="45" Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center"/>
                         <TextBox x:Name="TB_Login" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="700" Height="45" Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center"/>
                         <TextBox x:Name="TB_Password" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Width="700" Height="45" Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center"/>
-                        <TextBox x:Name="TB_Post" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Width="700" Height="45" Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center"/>
-                        <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                        <Grid Grid.Column="1" Grid.Row="3" Margin="40,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <RadioButton Style="{DynamicResource RadioButtonStyle}" HorizontalContentAlignment="Center" GroupName="Role" x:Name="RB_Admin" Content="Администратор" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <RadioButton Style="{DynamicResource RadioButtonStyle}" GroupName="Role" x:Name="RB_TO" Content="ТО" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <RadioButton Style="{DynamicResource RadioButtonStyle}" GroupName="Role" x:Name="RB_User" Content="Пользователь" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Grid>
+                        <TextBox x:Name="TB_Post" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Width="700" Height="45" Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center"/>
+                        <Grid Grid.Row="5" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>

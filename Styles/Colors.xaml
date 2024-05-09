@@ -9,7 +9,7 @@
     <SolidColorBrush x:Key="PlaceholderGrey" Color="#4B4B4B"/>
     <SolidColorBrush x:Key="ButtonsBackgroundCyan" Color="#A6FFE3"/>
     <SolidColorBrush x:Key="ButtonsHoverCyan" Color="#A6F9FF"/>
-    
-    
-    
+
+
+
 </ResourceDictionary>

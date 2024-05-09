@@ -20,20 +20,26 @@ namespace Booking.DB
             this.Event = new HashSet<Event>();
             this.Request = new HashSet<Request>();
         }
-    
+
+        public User(string ExternalFIO, string ExternalPassword, string ExternalLogin, string ExternalPost)
+        {
+            this.Event = new HashSet<Event>();
+            this.Request = new HashSet<Request>();
+            FIO = ExternalFIO;
+            Password = ExternalPassword;
+            Login = ExternalLogin;
+            Post = ExternalPost;
+        }
+
         public int Id { get; set; }
         public string FIO { get; set; }
         public string Password { get; set; }
         public string Login { get; set; }
         public string Post { get; set; }
-        public int Admin_Id { get; set; }
-        public int TO_Id { get; set; }
     
-        public virtual Admin Admin { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Event> Event { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Request { get; set; }
-        public virtual TO TO { get; set; }
     }
 }

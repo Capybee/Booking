@@ -22,7 +22,7 @@ namespace Booking.Views
     {
         readonly SolidColorBrush MyBrush = (SolidColorBrush) Application.Current.Resources["PlaceholderGrey"];
 
-        DB_BookingEntities Entities = new DB_BookingEntities();
+        DB_BookingEntities1 Entities = new DB_BookingEntities1();
 
         MainWindow _MainWindowInstance;
 

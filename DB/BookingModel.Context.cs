@@ -13,10 +13,10 @@ namespace Booking.DB
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DB_BookingEntities : DbContext
+    public partial class DB_BookingEntities1 : DbContext
     {
-        public DB_BookingEntities()
-            : base("name=DB_BookingEntities")
+        public DB_BookingEntities1()
+            : base("name=DB_BookingEntities1")
         {
         }
     

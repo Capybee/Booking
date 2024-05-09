@@ -190,19 +190,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="DB\BookingModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BookingModel.Context.cs</LastGenOutput>
       <DependentUpon>BookingModel.edmx</DependentUpon>
+      <LastGenOutput>BookingModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="DB\BookingModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BookingModel.edmx</DependentUpon>
       <LastGenOutput>BookingModel.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
