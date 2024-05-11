@@ -65,7 +65,8 @@ namespace Booking.Views
             }
             foreach (var admin in Admins)
             {
-                UsersCollectionInstance.Add(new UsersCollection(admin.Id, admin.FIO, "Администратор", admin.Login, admin.Password, ""));
+                if (admin.Id != ThisAdmin.Id) 
+                    UsersCollectionInstance.Add(new UsersCollection(admin.Id, admin.FIO, "Администратор", admin.Login, admin.Password, ""));
             }
             foreach (var to in TOCollection)
             {
