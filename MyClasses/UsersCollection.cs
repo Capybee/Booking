@@ -8,6 +8,13 @@ namespace Booking.MyClasses
 {
     public class UsersCollection
     {
+		private int _Id;
+		public int Id
+		{
+			get { return _Id; }
+			set { _Id = value; }
+		}
+
 		private string _FIO;
 		public string FIO
 		{
@@ -22,10 +29,35 @@ namespace Booking.MyClasses
 			set { _Role = value; }
 		}
 
-		public UsersCollection(string FIO, string Role)
+		private string _Login;
+		public string Login
 		{
+			get { return _Login; }
+			set { _Login = value; }
+		}
+
+		private string _Password;
+		public string Password
+		{
+			get { return _Password; }
+			set { _Password = value; }
+		}
+
+		private string _Post;
+		public string Post
+		{
+			get { return _Post; }
+			set { _Post = value; }
+		}
+
+		public UsersCollection(int Id,string FIO, string Role, string Login, string Password, string Post)
+		{
+			_Id = Id;
 			_FIO = FIO;
 			_Role = Role;
+			_Login = Login;
+			_Password = Password;
+			_Post = Post;
 		}
 	}
 }

@@ -58,17 +58,18 @@ namespace Booking.Views
 
         private void ConvertToUsersCollection()
         {
+            UsersCollectionInstance.Clear();
             foreach (var user in Users)
             {
-                UsersCollectionInstance.Add(new UsersCollection(user.FIO, "Пользователь"));
+                UsersCollectionInstance.Add(new UsersCollection(user.Id, user.FIO, "Пользователь", user.Login, user.Password, user.Post));
             }
             foreach (var admin in Admins)
             {
-                UsersCollectionInstance.Add(new UsersCollection(admin.FIO, "Администратор"));
+                UsersCollectionInstance.Add(new UsersCollection(admin.Id, admin.FIO, "Администратор", admin.Login, admin.Password, ""));
             }
             foreach (var to in TOCollection)
             {
-                UsersCollectionInstance.Add(new UsersCollection(to.FIO, "ТО"));
+                UsersCollectionInstance.Add(new UsersCollection(to.Id, to.FIO, "ТО", to.Login, to.Password, ""));
             }
         }
 
@@ -330,7 +331,7 @@ namespace Booking.Views
                         return;
                     }
 
-                    if (MessageBox.Show("Вы уверены, что хотите добавить нового пользователя?", "Добавить нового пользователя?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    if (MessageBox.Show("Вы уверены, что хотите добавить нового пользователя?", "Добавить нового пользователя?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
                         User NewUser = new User(TB_FIO.Text, TB_Password.Text, TB_Login.Text, TB_Post.Text);
                         Entities.User.Add(NewUser);
@@ -342,6 +343,7 @@ namespace Booking.Views
                         ConvertToUsersCollection();
                         DG_Users.ItemsSource = null;
                         DG_Users.ItemsSource = UsersCollectionInstance;
+                        MessageBox.Show("Пользователь успешно добавлен!", "Успех!", MessageBoxButton.OK);
                     }
                 }
                 else if (RB_Admin.IsChecked == true) 
@@ -399,7 +401,7 @@ namespace Booking.Views
                         return;
                     }
 
-                    if (MessageBox.Show("Вы уверены, что хотите добавить нового администратора?", "Добавить нового администратора?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    if (MessageBox.Show("Вы уверены, что хотите добавить нового администратора?", "Добавить нового администратора?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
                         Admin NewAdmin = new Admin(TB_FIO.Text, TB_Login.Text, TB_Password.Text);
                         Entities.Admin.Add(NewAdmin);
@@ -411,6 +413,7 @@ namespace Booking.Views
                         ConvertToUsersCollection();
                         DG_Users.ItemsSource = null;
                         DG_Users.ItemsSource = UsersCollectionInstance;
+                        MessageBox.Show("Пользователь успешно добавлен!", "Успех!", MessageBoxButton.OK);
                     }
                 }
                 else if (RB_TO.IsChecked == true)
@@ -468,9 +471,10 @@ namespace Booking.Views
                         return;
                     }
 
-                    if (MessageBox.Show("Вы уверены, что хотите добавить нового работника ТО?", "Добавить нового работника ТО?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    if (MessageBox.Show("Вы уверены, что хотите добавить нового работника ТО?", "Добавить нового работника ТО?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
                         TO NewTO = new TO(TB_FIO.Text, TB_Login.Text, TB_Password.Text);
+                        Entities.TO.Add(NewTO);
                         Entities.SaveChanges();
                         InputsClear();
                         Admins = Entities.Admin.ToList();
@@ -479,6 +483,7 @@ namespace Booking.Views
                         ConvertToUsersCollection();
                         DG_Users.ItemsSource = null;
                         DG_Users.ItemsSource = UsersCollectionInstance;
+                        MessageBox.Show("Пользователь успешно добавлен!", "Успех!", MessageBoxButton.OK);
                     }
                 }
 
@@ -493,5 +498,300 @@ namespace Booking.Views
 
 
         }
+
+        private void Btn_Change_Click(object sender, RoutedEventArgs e)
+        {
+            UsersCollection SelectedUser = DG_Users.SelectedItem as UsersCollection;
+
+            if (RB_Admin.IsChecked == true)
+            {
+                if (Validate(TB_FIO.Text, "ФИО") == 0)
+                {
+                    MessageBox.Show("Поле ФИО не может быть пустым!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_FIO.Text, "ФИО") == 1)
+                {
+                    MessageBox.Show("ФИО не может превышать 23 символа", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_FIO.Text, "ФИО") == 2)
+                {
+                    MessageBox.Show("ФИО не может быть меньше 6 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_FIO.Text, "ФИО") == 3)
+                {
+                    MessageBox.Show("ФИО не может Содержать: 1234567890/\\*\\-+!@#$%^&()_=\\{\\}:;", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (Validate(TB_Login.Text, "Логин") == 0)
+                {
+                    MessageBox.Show("Поле Логин не может быть пустым!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Login.Text, "Логин") == 1)
+                {
+                    MessageBox.Show("Логин не может превышать 20 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Login.Text, "Логин") == 2)
+                {
+                    MessageBox.Show("Логин не может быть меньше 8 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (Validate(TB_Password.Text, "Пароль") == 0)
+                {
+                    MessageBox.Show("Поле Пароль не может быть пустым!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Password.Text, "Пароль") == 1)
+                {
+                    MessageBox.Show("Пароль не может превышать 16 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Password.Text, "Пароль") == 2)
+                {
+                    MessageBox.Show("Пароль не может быть меньше 8 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (MessageBox.Show("Вы уверены, что хотите изменить данные пользователя? Это действие нельзя будет отменить в дальнейшем!", "Изменение данных пользователя", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        Entities.Admin.Find(SelectedUser.Id).FIO = TB_FIO.Text;
+                        Entities.Admin.Find(SelectedUser.Id).Login = TB_Login.Text;
+                        Entities.Admin.Find(SelectedUser.Id).Password = TB_Password.Text;
+                        Entities.SaveChanges();
+                        MessageBox.Show("Данные успешно изменены!", "Успех!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        InputsClear();
+                        ConvertToUsersCollection();
+                        DG_Users.ItemsSource = null;
+                        DG_Users.ItemsSource = UsersCollectionInstance;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("При изменении данных пользователя произошла ошибка! \n" + ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                        throw;
+                    }
+                }
+            }
+
+            if (RB_User.IsChecked == true)
+            {
+                if (Validate(TB_FIO.Text, "ФИО") == 0)
+                {
+                    MessageBox.Show("Поле ФИО не может быть пустым!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_FIO.Text, "ФИО") == 1)
+                {
+                    MessageBox.Show("ФИО не может превышать 23 символа", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_FIO.Text, "ФИО") == 2)
+                {
+                    MessageBox.Show("ФИО не может быть меньше 6 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_FIO.Text, "ФИО") == 3)
+                {
+                    MessageBox.Show("ФИО не может Содержать: 1234567890/\\*\\-+!@#$%^&()_=\\{\\}:;", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (Validate(TB_Login.Text, "Логин") == 0)
+                {
+                    MessageBox.Show("Поле Логин не может быть пустым!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Login.Text, "Логин") == 1)
+                {
+                    MessageBox.Show("Логин не может превышать 20 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Login.Text, "Логин") == 2)
+                {
+                    MessageBox.Show("Логин не может быть меньше 8 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (Validate(TB_Password.Text, "Пароль") == 0)
+                {
+                    MessageBox.Show("Поле Пароль не может быть пустым!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Password.Text, "Пароль") == 1)
+                {
+                    MessageBox.Show("Пароль не может превышать 16 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Password.Text, "Пароль") == 2)
+                {
+                    MessageBox.Show("Пароль не может быть меньше 8 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (Validate(TB_Post.Text, "Должность") == 0)
+                {
+                    MessageBox.Show("Поле Должность не может быть пустым!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Post.Text, "Должность") == 1)
+                {
+                    MessageBox.Show("Должность не может превышать 45 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Post.Text, "Должность") == 2)
+                {
+                    MessageBox.Show("Должность не может быть меньше 15 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Post.Text, "Должность") == 3)
+                {
+                    MessageBox.Show("Должность не может Содержать: 1234567890/\\*\\-+!@#$%^&()_=\\{\\}:;", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (MessageBox.Show("Вы уверены, что хотите изменить данные пользователя? Это действие нельзя будет отменить в дальнейшем!", "Изменение данных пользователя", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        Entities.User.Find(SelectedUser.Id).FIO = TB_FIO.Text;
+                        Entities.User.Find(SelectedUser.Id).Login = TB_Login.Text;
+                        Entities.User.Find(SelectedUser.Id).Password = TB_Password.Text;
+                        Entities.User.Find(SelectedUser.Id).Post = TB_Post.Text;
+                        Entities.SaveChanges();
+                        MessageBox.Show("Данные успешно изменены!", "Успех!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        InputsClear();
+                        ConvertToUsersCollection();
+                        DG_Users.ItemsSource = null;
+                        DG_Users.ItemsSource = UsersCollectionInstance;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("При изменении данных пользователя произошла ошибка! \n" + ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                        throw;
+                    }
+                }
+            }
+
+            if (RB_TO.IsChecked == true)
+            {
+                if (Validate(TB_FIO.Text, "ФИО") == 0)
+                {
+                    MessageBox.Show("Поле ФИО не может быть пустым!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_FIO.Text, "ФИО") == 1)
+                {
+                    MessageBox.Show("ФИО не может превышать 23 символа", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_FIO.Text, "ФИО") == 2)
+                {
+                    MessageBox.Show("ФИО не может быть меньше 6 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_FIO.Text, "ФИО") == 3)
+                {
+                    MessageBox.Show("ФИО не может Содержать: 1234567890/\\*\\-+!@#$%^&()_=\\{\\}:;", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (Validate(TB_Login.Text, "Логин") == 0)
+                {
+                    MessageBox.Show("Поле Логин не может быть пустым!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Login.Text, "Логин") == 1)
+                {
+                    MessageBox.Show("Логин не может превышать 20 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Login.Text, "Логин") == 2)
+                {
+                    MessageBox.Show("Логин не может быть меньше 8 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (Validate(TB_Password.Text, "Пароль") == 0)
+                {
+                    MessageBox.Show("Поле Пароль не может быть пустым!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Password.Text, "Пароль") == 1)
+                {
+                    MessageBox.Show("Пароль не может превышать 16 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if (Validate(TB_Password.Text, "Пароль") == 2)
+                {
+                    MessageBox.Show("Пароль не может быть меньше 8 символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (MessageBox.Show("Вы уверены, что хотите изменить данные пользователя? Это действие нельзя будет отменить в дальнейшем!", "Изменение данных пользователя", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        Entities.TO.Find(SelectedUser.Id).FIO = TB_FIO.Text;
+                        Entities.TO.Find(SelectedUser.Id).Login = TB_Login.Text;
+                        Entities.TO.Find(SelectedUser.Id).Password = TB_Password.Text;
+                        Entities.SaveChanges();
+                        MessageBox.Show("Данные успешно изменены!", "Успех!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        InputsClear();
+                        ConvertToUsersCollection();
+                        DG_Users.ItemsSource = null;
+                        DG_Users.ItemsSource = UsersCollectionInstance;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("При изменении данных пользователя произошла ошибка! \n" + ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                        throw;
+                    }
+                }
+            }
+        }
+
+        //Обработка событий
+        private void DG_Users_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UsersCollection SelectedUser = DG_Users.SelectedItem as UsersCollection;
+
+            if (SelectedUser != null)
+            {
+                if (SelectedUser.Role == "Пользователь")
+                {
+                    RB_User.IsChecked = true;
+                    TB_FIO.Text = SelectedUser.FIO;
+                    TB_Login.Text = SelectedUser.Login;
+                    TB_Password.Text = SelectedUser.Password;
+                    TB_Post.Text = SelectedUser.Post;
+                }
+                else if (SelectedUser.Role == "Администратор")
+                {
+                    RB_Admin.IsChecked = true;
+                    TB_FIO.Text = SelectedUser.FIO;
+                    TB_Login.Text = SelectedUser.Login;
+                    TB_Password.Text = SelectedUser.Password;
+                    TB_Post.Text = SelectedUser.Post;
+                }
+                else if (SelectedUser.Role == "ТО")
+                {
+                    RB_TO.IsChecked = true;
+                    TB_FIO.Text = SelectedUser.FIO;
+                    TB_Login.Text = SelectedUser.Login;
+                    TB_Password.Text = SelectedUser.Password;
+                    TB_Post.Text = SelectedUser.Post;
+                }
+            }
+        }
+
+        
     }
 }

@@ -52,7 +52,7 @@
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="0" BorderThickness="0,0,1,0" BorderBrush="Black">
-                        <DataGrid x:Name="DG_Users" Style="{DynamicResource DataGridStyle}" AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid x:Name="DG_Users" Style="{DynamicResource DataGridStyle}" SelectionChanged="DG_Users_SelectionChanged" AutoGenerateColumns="False" CanUserAddRows="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding Path=FIO}" Header="ФИО" Width="2.8*"/>
                                 <DataGridTextColumn Binding="{Binding Path=Role}" Header="Роль" Width="1*"/>
@@ -98,7 +98,7 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Button x:Name="Btn_Add" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Добавить" Grid.Column="0" Click="Btn_Add_Click"/>
-                            <Button x:Name="Btn_Change" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Редактировать" Grid.Column="1"/>
+                            <Button x:Name="Btn_Change" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Редактировать" Grid.Column="1" Click="Btn_Change_Click"/>
                             <Button x:Name="Btn_Delete" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Удалить" Grid.Column="2"/>    
                         </Grid>
                     </Grid>
