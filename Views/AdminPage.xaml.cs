@@ -612,6 +612,57 @@ namespace Booking.Views
             }
         }
 
+        private void Btn_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            UsersCollection SelectedObject = DG_Users.SelectedItem as UsersCollection;
+
+            if (MessageBox.Show("Вы уверены, что хотите удалить пользователя? Это действие невозможно отменить!", "Удаление пользователя", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                if (SelectedObject.Role == "Пользователь")
+                {
+                    User SelectedUser = Entities.User.Find(SelectedObject.Id);
+
+                    Entities.User.Remove(SelectedUser);
+                    Entities.SaveChanges();
+
+                    InputsClear();
+                    ConvertToUsersCollection();
+                    DG_Users.ItemsSource = null;
+                    DG_Users.ItemsSource = UsersCollectionInstance;
+
+                    MessageBox.Show("Пользователь успешно удалён!", "Успех!", MessageBoxButton.OK);
+                }
+                else if(SelectedObject.Role == "Администратор")
+                {
+                    Admin SelectedAdmin = Entities.Admin.Find(SelectedObject.Id);
+
+                    Entities.Admin.Remove(SelectedAdmin);
+                    Entities.SaveChanges();
+
+                    InputsClear();
+                    ConvertToUsersCollection();
+                    DG_Users.ItemsSource = null;
+                    DG_Users.ItemsSource = UsersCollectionInstance;
+
+                    MessageBox.Show("Пользователь успешно удалён!", "Успех!", MessageBoxButton.OK);
+                }
+                else if (SelectedObject.Role == "ТО")
+                {
+                    TO SelectedTO = Entities.TO.Find(SelectedObject.Id);
+
+                    Entities.TO.Remove(SelectedTO);
+                    Entities.SaveChanges();
+
+                    InputsClear();
+                    ConvertToUsersCollection();
+                    DG_Users.ItemsSource = null;
+                    DG_Users.ItemsSource = UsersCollectionInstance;
+
+                    MessageBox.Show("Пользователь успешно удалён!", "Успех!", MessageBoxButton.OK);
+                }
+            }
+        }
+
         //Обработка событий
         private void DG_Users_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -645,7 +696,5 @@ namespace Booking.Views
                 }
             }
         }
-
-        
     }
 }

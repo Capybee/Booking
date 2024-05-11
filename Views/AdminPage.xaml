@@ -99,7 +99,7 @@
                             </Grid.ColumnDefinitions>
                             <Button x:Name="Btn_Add" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Добавить" Grid.Column="0" Click="Btn_Add_Click"/>
                             <Button x:Name="Btn_Change" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Редактировать" Grid.Column="1" Click="Btn_Change_Click"/>
-                            <Button x:Name="Btn_Delete" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Удалить" Grid.Column="2"/>    
+                            <Button x:Name="Btn_Delete" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Удалить" Grid.Column="2" Click="Btn_Delete_Click"/>    
                         </Grid>
                     </Grid>
                 </Grid>
