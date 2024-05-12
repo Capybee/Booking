@@ -28,7 +28,7 @@ namespace Booking.Views
         private List<Admin> Admins;
         private List<User> Users;
         private List<TO> TOCollection;
-        private DB_BookingEntities1 Entities = new DB_BookingEntities1();
+        private DB_BookingEntities4 Entities = new DB_BookingEntities4();
         private List<UsersCollection> UsersCollectionInstance = new List<UsersCollection>();
         private bool IsUserCreating = false;
 
@@ -517,6 +517,7 @@ namespace Booking.Views
             }
             else
             {
+                InputsClear();
                 MyLostFocus();
                 EventBinding();
                 IsUserCreating = true;

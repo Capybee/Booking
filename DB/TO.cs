@@ -14,11 +14,7 @@ namespace Booking.DB
     
     public partial class TO
     {
-        public TO() 
-        {
-        }
-
-        public TO(string ExternalFIO, string ExternalLogin, string ExternalPassword) 
+        public TO(string ExternalFIO, string ExternalLogin, string ExternalPassword)
         {
             FIO = ExternalFIO;
             Login = ExternalLogin;

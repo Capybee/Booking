@@ -98,6 +98,8 @@
     <Compile Include="DB\User.cs">
       <DependentUpon>BookingModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="MyClasses\EventDate.cs" />
+    <Compile Include="MyClasses\TimeClass.cs" />
     <Compile Include="MyClasses\UsersCollection.cs" />
     <Compile Include="Views\AdminPage.xaml.cs">
       <DependentUpon>AdminPage.xaml</DependentUpon>

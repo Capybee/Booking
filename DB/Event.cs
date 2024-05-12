@@ -17,7 +17,8 @@ namespace Booking.DB
         public int Id { get; set; }
         public string Title { get; set; }
         public System.DateTime Date { get; set; }
-        public System.TimeSpan Time { get; set; }
+        public System.TimeSpan TimeStart { get; set; }
+        public System.TimeSpan TimeEnd { get; set; }
         public string Equipment { get; set; }
         public string AdditionalMaterials { get; set; }
         public int Hall_Id { get; set; }

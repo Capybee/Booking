@@ -21,7 +21,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="Date" Type="date" Nullable="false" />
-          <Property Name="Time" Type="time" Precision="7" Nullable="false" />
+          <Property Name="TimeStart" Type="time" Precision="7" Nullable="false" />
+          <Property Name="TimeEnd" Type="time" Precision="7" Nullable="false" />
           <Property Name="Equipment" Type="text" Nullable="false" />
           <Property Name="AdditionalMaterials" Type="text" />
           <Property Name="Hall_Id" Type="int" Nullable="false" />
@@ -179,7 +180,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Time" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="TimeStart" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="TimeEnd" Type="Time" Nullable="false" Precision="7" />
           <Property Name="Equipment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="AdditionalMaterials" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Hall_Id" Type="Int32" Nullable="false" />
@@ -296,7 +298,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DB_BookingEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DB_BookingEntities4" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Admin" EntityType="Self.Admin" />
           <EntitySet Name="Event" EntityType="Self.Event" />
           <EntitySet Name="Hall" EntityType="Self.Hall" />
@@ -329,7 +331,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище DB_BookingModelContainer" CdmEntityContainer="DB_BookingEntities1">
+        <EntityContainerMapping StorageEntityContainer="Хранилище DB_BookingModelContainer" CdmEntityContainer="DB_BookingEntities4">
           <EntitySetMapping Name="Admin">
             <EntityTypeMapping TypeName="DB_BookingModel.Admin">
               <MappingFragment StoreEntitySet="Admin">
@@ -346,7 +348,8 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
+                <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
                 <ScalarProperty Name="Equipment" ColumnName="Equipment" />
                 <ScalarProperty Name="AdditionalMaterials" ColumnName="AdditionalMaterials" />
                 <ScalarProperty Name="Hall_Id" ColumnName="Hall_Id" />

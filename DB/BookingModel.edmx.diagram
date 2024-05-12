@@ -4,12 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2978606c724a47f887399c15cc4484f9" Name="Diagram1">
+      <Diagram DiagramId="8d25f3f94bd7424c9f41454fcafb15fc" Name="Diagram1">
         <EntityTypeShape EntityType="DB_BookingModel.Admin" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_BookingModel.Event" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_BookingModel.Event" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_BookingModel.Hall" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_BookingModel.Request" Width="1.5" PointX="6" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_BookingModel.TO" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_BookingModel.TO" Width="1.5" PointX="0.75" PointY="8.625" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_BookingModel.User" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
         <AssociationConnector Association="DB_BookingModel.FK_Request_Admin" ManuallyRouted="false" />
         <AssociationConnector Association="DB_BookingModel.FK_Event_Hall" ManuallyRouted="false" />

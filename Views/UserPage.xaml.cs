@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Booking.MyClasses;
 
 namespace Booking.Views
 {
@@ -21,10 +22,21 @@ namespace Booking.Views
     public partial class UserPage : Page
     {
         SolidColorBrush MyBrush = (SolidColorBrush)Application.Current.Resources["PlaceholderGrey"];
+        List<DateTime> Dates = new List<DateTime>();
+        List<EventDate> EventDates = new List<EventDate>();
+        DateTime SelectedDate = new DateTime();
+
         public UserPage()
         {
             InitializeComponent();
-            
+
+            DateListCreate();
+            CreateEventDateCollection();
+
+            TBL_Date.Text = Dates.First().Date.ToString("D");
+            SelectedDate = Dates.First().Date;
+            SetTimeList();
+
             Tb_EventTitle.Text = "Введите название мероприятия";
             Tb_EventTitle.Foreground = MyBrush;
             TB_AdditionalEquipment.Text = "Укажите необходимое оборудование";
@@ -41,6 +53,47 @@ namespace Booking.Views
             TB_AdditionalEquipmentVip.Foreground = MyBrush;
         }
 
+        //Методы
+        private void DateListCreate()
+        {
+            DateTime FirstDate = DateTime.Today.AddDays(1);
+            DateTime EndDate = FirstDate.AddMonths(1);
+
+            for (DateTime Date = FirstDate; Date < EndDate; Date = Date.AddDays(1))
+            {
+                Dates.Add(Date);
+            }
+        }
+
+        private void CreateEventDateCollection()
+        {
+            foreach (var date in Dates)
+            {
+                EventDates.Add(new EventDate() { Start = date });
+            }
+        }
+
+        private void SetTimeList()
+        {
+            foreach (var date in EventDates)
+            {
+                if (date.Start == SelectedDate)
+                {
+                    DG_Time.ItemsSource = null;
+
+                    List<TimeClass> TimeCollection = new List<TimeClass>();
+
+                    foreach (var time in date.StartTime)
+                    {
+                        TimeCollection.Add(new TimeClass() { Time = SelectedDate.Add(time).ToString("t")});
+                    }
+
+                    DG_Time.ItemsSource = TimeCollection;
+                }
+            }
+        }
+
+        //Placeholder
         private void Tb_EventTitle_GotFocus(object sender, RoutedEventArgs e)
         {
             if (Tb_EventTitle.Text == "Введите название мероприятия")
