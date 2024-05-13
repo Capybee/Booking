@@ -26,6 +26,8 @@ namespace Booking.Views
         List<DateTime> Dates = new List<DateTime>();
         List<EventDate> EventDates = new List<EventDate>();
         DateTime SelectedDate = new DateTime();
+        DateTime SelectedDateBig = new DateTime();
+        DateTime SelectedDateVip = new DateTime();
         DB_BookingEntities4 Entities = new DB_BookingEntities4();
 
         public UserPage()
@@ -37,11 +39,13 @@ namespace Booking.Views
 
             TBL_Date.Text = Dates.First().Date.ToString("D");
             SelectedDate = Dates.First().Date;
+            SelectedDateBig = Dates.First().Date;
+            SelectedDateVip = Dates.First().Date;
             TBL_DateBig.Text = Dates.First().Date.ToString("D");
             TBL_DateVip.Text = Dates.First().Date.ToString("D");
-            SetTimeList(1);
-            SetTimeList(2);
-            SetTimeList(3);
+            SetTimeList(1, SelectedDate);
+            SetTimeList(2, SelectedDateVip);
+            SetTimeList(3, SelectedDateBig);
 
             Tb_EventTitle.Text = "Введите название мероприятия";
             Tb_EventTitle.Foreground = MyBrush;
@@ -79,11 +83,11 @@ namespace Booking.Views
             }
         }
 
-        private void SetTimeList(int HallId)
+        private void SetTimeList(int HallId, DateTime _SelectedDate)
         {
             foreach (var date in EventDates)
             {
-                if (date.Start == SelectedDate)
+                if (date.Start == _SelectedDate)
                 {                  
                     List<Event> Events = Entities.Event.ToList();
                     bool IsContains = false;
@@ -139,7 +143,7 @@ namespace Booking.Views
 
                         foreach (var time in ThinnedTimeCollection)
                         {
-                            TimeCollection.Add(new TimeClass() { Time = SelectedDate.Add(time).ToString("t") });
+                            TimeCollection.Add(new TimeClass() { Time = _SelectedDate.Add(time).ToString("t") });
                         }
 
                        if (HallId == 1)
@@ -168,7 +172,7 @@ namespace Booking.Views
 
                             foreach (var time in date.StartTime)
                             {
-                                TimeCollection.Add(new TimeClass() { Time = SelectedDate.Add(time).ToString("t") });
+                                TimeCollection.Add(new TimeClass() { Time = _SelectedDate.Add(time).ToString("t") });
                             }
 
                             DG_Time.ItemsSource = TimeCollection;
@@ -181,7 +185,7 @@ namespace Booking.Views
 
                             foreach (var time in date.StartTime)
                             {
-                                TimeCollection.Add(new TimeClass() { Time = SelectedDate.Add(time).ToString("t") });
+                                TimeCollection.Add(new TimeClass() { Time = _SelectedDate.Add(time).ToString("t") });
                             }
 
                             DG_TimeBig.ItemsSource = TimeCollection;
@@ -194,7 +198,7 @@ namespace Booking.Views
 
                             foreach (var time in date.StartTime)
                             {
-                                TimeCollection.Add(new TimeClass() { Time = SelectedDate.Add(time).ToString("t") });
+                                TimeCollection.Add(new TimeClass() { Time = _SelectedDate.Add(time).ToString("t") });
                             }
 
                             DG_TimeVip.ItemsSource = TimeCollection;
@@ -284,6 +288,145 @@ namespace Booking.Views
                 TB_AdditionalEquipmentVip.Text = "Укажите необходимое оборудование";
                 SolidColorBrush MyBrush = (SolidColorBrush)Application.Current.Resources["PlaceholderGrey"];
                 TB_AdditionalEquipmentVip.Foreground = MyBrush;
+            }
+        }
+
+        //Обработка кликов
+        private void Btn_PrevDate_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedDate != Dates.First())
+            {
+                for (int i = 0; i < Dates.Count; i++)
+                {
+                    if (Dates[i] == SelectedDate)
+                    {
+                        SelectedDate = Dates[i - 1];
+                        TBL_Date.Text = SelectedDate.ToString("D");
+                        SetTimeList(1, SelectedDate);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                SelectedDate = Dates.Last();
+                TBL_Date.Text = SelectedDate.ToString("D");
+                SetTimeList(1, SelectedDate);
+            }
+        }
+
+        private void Btn_NextDate_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedDate != Dates.Last())
+            {
+                for (int i = 0; i < Dates.Count; i++)
+                {
+                    if (Dates[i] == SelectedDate)
+                    {
+                        SelectedDate = Dates[i + 1];
+                        TBL_Date.Text = SelectedDate.ToString("D");
+                        SetTimeList(1, SelectedDate);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                SelectedDate = Dates.First();
+                TBL_Date.Text = SelectedDate.ToString("D");
+                SetTimeList(1, SelectedDate);
+            }
+        }
+
+        private void Btn_PrevDateBig_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedDateBig != Dates.First())
+            {
+                for (int i = 0; i < Dates.Count; i++)
+                {
+                    if (Dates[i] == SelectedDateBig)
+                    {
+                        SelectedDateBig = Dates[i - 1];
+                        TBL_DateBig.Text = SelectedDateBig.ToString("D");
+                        SetTimeList(2, SelectedDateBig);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                SelectedDateBig = Dates.Last();
+                TBL_DateBig.Text = SelectedDateBig.ToString("D");
+                SetTimeList(2, SelectedDateBig);
+            }
+        }
+
+        private void Btn_NextDateBig_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedDateBig != Dates.Last())
+            {
+                for (int i = 0; i < Dates.Count; i++)
+                {
+                    if (Dates[i] == SelectedDateBig)
+                    {
+                        SelectedDateBig = Dates[i + 1];
+                        TBL_DateBig.Text = SelectedDateBig.ToString("D");
+                        SetTimeList(2, SelectedDateBig);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                SelectedDateBig = Dates.First();
+                TBL_DateBig.Text = SelectedDateBig.ToString("D");
+                SetTimeList(2, SelectedDateBig);
+            }
+        }
+
+        private void Btn_PrevDateVip_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedDateVip != Dates.First())
+            {
+                for (int i = 0; i < Dates.Count; i++)
+                {
+                    if (Dates[i] == SelectedDateVip)
+                    {
+                        SelectedDateVip = Dates[i - 1];
+                        TBL_DateVip.Text = SelectedDateVip.ToString("D");
+                        SetTimeList(1, SelectedDateVip);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                SelectedDateVip = Dates.Last();
+                TBL_DateVip.Text = SelectedDateVip.ToString("D");
+                SetTimeList(1, SelectedDateVip);
+            }
+        }
+
+        private void Btn_NextDateVip_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedDateVip != Dates.Last())
+            {
+                for (int i = 0; i < Dates.Count; i++)
+                {
+                    if (Dates[i] == SelectedDateVip)
+                    {
+                        SelectedDateVip = Dates[i + 1];
+                        TBL_DateVip.Text = SelectedDateVip.ToString("D");
+                        SetTimeList(3, SelectedDateVip);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                SelectedDateVip = Dates.First();
+                TBL_DateVip.Text = SelectedDateVip.ToString("D");
+                SetTimeList(3, SelectedDateVip);
             }
         }
     }
