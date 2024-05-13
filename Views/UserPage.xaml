@@ -101,9 +101,23 @@
                     </Grid.ColumnDefinitions>
                     <Border BorderThickness="0,0,1,0" BorderBrush="Black">
                         <Grid Grid.Column="0">
-                            <DataGrid Style="{DynamicResource DataGridStyle}" FontSize="22">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="Btn_PrevDateBig" Content="←" Grid.Column="0" Style="{DynamicResource ButtonStyle}"/>
+                                <Button x:Name="Btn_NextDateBig" Content="→" Grid.Column="2" Style="{DynamicResource ButtonStyle}"/>
+                                <TextBlock x:Name="TBL_DateBig" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
+                            <DataGrid x:Name="DG_TimeBig" Style="{DynamicResource DataGridStyle}" AutoGenerateColumns="False" FontSize="22" Grid.Row="1">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Время начала мероприятия" Width="*"/>
+                                    <DataGridTextColumn Binding="{Binding Path=Time}" Header="Время начала мероприятия" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
@@ -170,9 +184,23 @@
                     </Grid.ColumnDefinitions>
                     <Border BorderThickness="0,0,1,0" BorderBrush="Black">
                         <Grid Grid.Column="0">
-                            <DataGrid Style="{DynamicResource DataGridStyle}" FontSize="22">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="Btn_PrevDateVip" Content="←" Grid.Column="0" Style="{DynamicResource ButtonStyle}"/>
+                                <Button x:Name="Btn_NextDateVip" Content="→" Grid.Column="2" Style="{DynamicResource ButtonStyle}"/>
+                                <TextBlock x:Name="TBL_DateVip" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
+                            <DataGrid x:Name="DG_TimeVip" Style="{DynamicResource DataGridStyle}" AutoGenerateColumns="False" FontSize="22" Grid.Row="1">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Время начала мероприятия" Width="*"/>
+                                    <DataGridTextColumn Binding="{Binding Path=Time}" Header="Время начала мероприятия" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>

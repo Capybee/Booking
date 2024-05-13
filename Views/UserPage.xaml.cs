@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Booking.DB;
 using Booking.MyClasses;
 
 namespace Booking.Views
@@ -25,6 +26,7 @@ namespace Booking.Views
         List<DateTime> Dates = new List<DateTime>();
         List<EventDate> EventDates = new List<EventDate>();
         DateTime SelectedDate = new DateTime();
+        DB_BookingEntities4 Entities = new DB_BookingEntities4();
 
         public UserPage()
         {
@@ -35,7 +37,11 @@ namespace Booking.Views
 
             TBL_Date.Text = Dates.First().Date.ToString("D");
             SelectedDate = Dates.First().Date;
-            SetTimeList();
+            TBL_DateBig.Text = Dates.First().Date.ToString("D");
+            TBL_DateVip.Text = Dates.First().Date.ToString("D");
+            SetTimeList(1);
+            SetTimeList(2);
+            SetTimeList(3);
 
             Tb_EventTitle.Text = "Введите название мероприятия";
             Tb_EventTitle.Foreground = MyBrush;
@@ -73,22 +79,127 @@ namespace Booking.Views
             }
         }
 
-        private void SetTimeList()
+        private void SetTimeList(int HallId)
         {
             foreach (var date in EventDates)
             {
                 if (date.Start == SelectedDate)
-                {
-                    DG_Time.ItemsSource = null;
+                {                  
+                    List<Event> Events = Entities.Event.ToList();
+                    bool IsContains = false;
 
-                    List<TimeClass> TimeCollection = new List<TimeClass>();
-
-                    foreach (var time in date.StartTime)
+                    foreach (var @event in Events)
                     {
-                        TimeCollection.Add(new TimeClass() { Time = SelectedDate.Add(time).ToString("t")});
+                        if (@event.Date == date.Start && @event.Hall_Id == HallId)
+                        {
+                            IsContains = true;
+                            break;
+                        }
                     }
 
-                    DG_Time.ItemsSource = TimeCollection;
+                    if (IsContains)
+                    {
+
+                        List<Event> CheckedEvents = new List<Event>();
+
+                        foreach (var @event in Events)
+                        {
+                            if (@event.Date == date.Start)
+                            {
+                                CheckedEvents.Add(@event);
+                            }
+                        }
+
+                        List<TimeClass> TimeCollection = new List<TimeClass>();
+
+                        List<TimeSpan> ThinnedTimeCollection = new List<TimeSpan>();
+                        
+                        foreach (var time in date.StartTime)
+                        {
+                            ThinnedTimeCollection.Add(time);
+                        }
+
+                        foreach (var CheckedEvent in CheckedEvents)
+                        {
+                            for (int i = 0; i < date.StartTime.Count; i++)
+                            {
+                                if (date.StartTime[i] == CheckedEvent.TimeStart)
+                                {
+                                    TimeSpan StartedTime = date.StartTime[i];
+                                    TimeSpan EndTime = CheckedEvent.TimeEnd;
+
+                                    for (TimeSpan Time = StartedTime; Time <= EndTime; Time = Time.Add(new TimeSpan(0, 30, 0)))
+                                    {
+                                        ThinnedTimeCollection.Remove(Time);
+                                    }
+
+                                }
+                            }
+                        }
+
+                        foreach (var time in ThinnedTimeCollection)
+                        {
+                            TimeCollection.Add(new TimeClass() { Time = SelectedDate.Add(time).ToString("t") });
+                        }
+
+                       if (HallId == 1)
+                       {
+                            DG_Time.ItemsSource = null;
+                            DG_Time.ItemsSource = TimeCollection;
+                       }
+                       else if (HallId == 2)
+                       {
+                            DG_TimeBig.ItemsSource = null;
+                            DG_TimeBig.ItemsSource = TimeCollection;
+                       }
+                       else if (HallId == 3)
+                       {
+                            DG_TimeVip.ItemsSource = null;
+                            DG_TimeVip.ItemsSource = TimeCollection;
+                       }
+                    }
+                    else
+                    {
+                        if (HallId == 1)
+                        {
+                            DG_Time.ItemsSource = null;
+
+                            List<TimeClass> TimeCollection = new List<TimeClass>();
+
+                            foreach (var time in date.StartTime)
+                            {
+                                TimeCollection.Add(new TimeClass() { Time = SelectedDate.Add(time).ToString("t") });
+                            }
+
+                            DG_Time.ItemsSource = TimeCollection;
+                        }
+                        else if (HallId == 2)
+                        {
+                            DG_TimeBig.ItemsSource = null;
+
+                            List<TimeClass> TimeCollection = new List<TimeClass>();
+
+                            foreach (var time in date.StartTime)
+                            {
+                                TimeCollection.Add(new TimeClass() { Time = SelectedDate.Add(time).ToString("t") });
+                            }
+
+                            DG_TimeBig.ItemsSource = TimeCollection;
+                        }
+                        else if (HallId == 3)
+                        {
+                            DG_TimeVip.ItemsSource = null;
+
+                            List<TimeClass> TimeCollection = new List<TimeClass>();
+
+                            foreach (var time in date.StartTime)
+                            {
+                                TimeCollection.Add(new TimeClass() { Time = SelectedDate.Add(time).ToString("t") });
+                            }
+
+                            DG_TimeVip.ItemsSource = TimeCollection;
+                        }
+                    }
                 }
             }
         }
