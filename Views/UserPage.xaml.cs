@@ -34,6 +34,9 @@ namespace Booking.Views
         List<AdditionalFile> AdditionalFiles = new List<AdditionalFile>();
         List<AdditionalFile> AdditionalFilesBig = new List<AdditionalFile>();
         List<AdditionalFile> AdditionalFilesVip = new List<AdditionalFile>();
+        List<string> EventEndTime = new List<string>();
+        List<string> EventEndTimeBig = new List<string>();
+        List<string> EventEndTimeVip = new List<string>();
 
         public UserPage()
         {
@@ -611,10 +614,74 @@ namespace Booking.Views
         //Обработка событий
         private void DG_Time_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            EventEndTime.Clear();
+            CB_EndTime.ItemsSource = null;
+
             var SelectedItem = DG_Time.SelectedItem as TimeClass;
             TB_StartTime.Text = SelectedItem.Time;
+
+            string TimeStartStr = TB_StartTime.Text;
+
+            var TimeStartSplit = TimeStartStr.Split(':');
+
+            TimeSpan TimeStart = new TimeSpan(Convert.ToInt32(TimeStartSplit[0]), Convert.ToInt32(TimeStartSplit[1]), 0);
+
+            TimeSpan TimeEnd = TimeStart.Add(new TimeSpan(6, 0, 0));
+
+            for (TimeSpan time = TimeStart; time <= TimeEnd; time = time.Add(new TimeSpan(0,30,0)))
+            {
+                EventEndTime.Add(time.ToString());
+            }
+
+            CB_EndTime.ItemsSource = EventEndTime;
         }
 
-        
+        private void DG_TimeBig_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EventEndTimeBig.Clear();
+            CB_EndTimeBig.ItemsSource = null;
+
+            var SelectedItem = DG_TimeBig.SelectedItem as TimeClass;
+            TB_StartTimeBig.Text = SelectedItem.Time;
+
+            string TimeStartStr = TB_StartTimeBig.Text;
+
+            var TimeStartSplit = TimeStartStr.Split(':');
+
+            TimeSpan TimeStart = new TimeSpan(Convert.ToInt32(TimeStartSplit[0]), Convert.ToInt32(TimeStartSplit[1]), 0);
+
+            TimeSpan TimeEnd = TimeStart.Add(new TimeSpan(6, 0, 0));
+
+            for (TimeSpan time = TimeStart; time <= TimeEnd; time = time.Add(new TimeSpan(0, 30, 0)))
+            {
+                EventEndTimeBig.Add(time.ToString());
+            }
+
+            CB_EndTimeBig.ItemsSource = EventEndTimeBig;
+        }
+
+        private void DG_TimeVip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EventEndTimeVip.Clear();
+            CB_EndTimeVip.ItemsSource = null;
+
+            var SelectedItem = DG_TimeVip.SelectedItem as TimeClass;
+            TB_StartTimeVip.Text = SelectedItem.Time;
+
+            string TimeStartStr = TB_StartTimeVip.Text;
+
+            var TimeStartSplit = TimeStartStr.Split(':');
+
+            TimeSpan TimeStart = new TimeSpan(Convert.ToInt32(TimeStartSplit[0]), Convert.ToInt32(TimeStartSplit[1]), 0);
+
+            TimeSpan TimeEnd = TimeStart.Add(new TimeSpan(6, 0, 0));
+
+            for (TimeSpan time = TimeStart; time <= TimeEnd; time = time.Add(new TimeSpan(0, 30, 0)))
+            {
+                EventEndTimeVip.Add(time.ToString());
+            }
+
+            CB_EndTimeVip.ItemsSource = EventEndTimeVip;
+        }
     }
 }
