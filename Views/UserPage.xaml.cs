@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,9 +12,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Booking.DB;
 using Booking.MyClasses;
+using Microsoft.Win32;
+using System.IO;
 
 namespace Booking.Views
 {
@@ -29,6 +31,9 @@ namespace Booking.Views
         DateTime SelectedDateBig = new DateTime();
         DateTime SelectedDateVip = new DateTime();
         DB_BookingEntities4 Entities = new DB_BookingEntities4();
+        List<AdditionalFile> AdditionalFiles = new List<AdditionalFile>();
+        List<AdditionalFile> AdditionalFilesBig = new List<AdditionalFile>();
+        List<AdditionalFile> AdditionalFilesVip = new List<AdditionalFile>();
 
         public UserPage()
         {
@@ -206,6 +211,44 @@ namespace Booking.Views
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Проверяет входную строку на соответствие параметрам.
+        /// </summary>
+        /// <param name="Text">Проверяемая строка</param>
+        /// <param name="MaxLength">Максимальная длина строки</param>
+        /// <param name="MinLength">Минимальная длина строки</param>
+        /// <param name="ForbiddenSymbols">Запрещенные к использованию символы</param>
+        /// <returns>
+        /// -1 - валидация успешна
+        /// 0 - введена пустая строка
+        /// 1 - длина строки превысила допустимую
+        /// 2 - длина строки меньше допустимой
+        /// 3 - строка содержит запрещённый к использованию символ
+        /// </returns>
+        private int Validate(string Text, int MaxLength, int MinLength, string ForbiddenSymbols)
+        {
+            if (string.IsNullOrEmpty(Text))
+            {
+                return 0;
+            }
+            if (Text.Length > MaxLength) 
+            {
+                return 1;
+            }
+            if (Text.Length < MinLength)
+            {
+                return 2;
+            }
+            foreach (char s in ForbiddenSymbols) 
+            {
+                if (Text.Contains(s))
+                {
+                    return 3;
+                }
+            }
+            return -1;
         }
 
         //Placeholder
@@ -429,5 +472,149 @@ namespace Booking.Views
                 SetTimeList(3, SelectedDateVip);
             }
         }
+
+        private void Btn_AddFile_Click(object sender, RoutedEventArgs e)
+        {
+            string ApplicationName = "Booking";
+
+            string DocumentPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            string ApplicationFolderPath = Path.Combine(DocumentPath, ApplicationName);
+
+            if(!Directory.Exists(ApplicationFolderPath))
+            {
+                Directory.CreateDirectory(ApplicationFolderPath);
+            }
+
+            OpenFileDialog OpenFileDialogInstance = new OpenFileDialog();
+            OpenFileDialogInstance.Filter = "Документы (*.doc; *.docx; *.pdf)|*.doc;*.docx; *.pdf | Презентации (*.pptx)| *.pptx | Изображения (*.png; *.jpeg; *.jpg)| *.png; *.jpeg; *.jpg | Аудио (*.mp3) | *.mp3 | Видео (*.mp4) | *.mp4";
+            if (OpenFileDialogInstance.ShowDialog() == true)
+            {
+                string FilePath = OpenFileDialogInstance.FileName;
+                string FileName = Path.GetFileName(FilePath);
+                
+                string TargetPath = Path.Combine(ApplicationFolderPath, FileName);
+
+                File.Copy(FilePath, TargetPath, true);
+
+                AdditionalFiles.Add(new AdditionalFile() { FileName = FileName, FilePath = TargetPath } );
+            }
+
+            DG_AdditionalFiles.ItemsSource = null;
+            DG_AdditionalFiles.ItemsSource = AdditionalFiles;
+        }
+
+        private void Btn_DeleteFile_Click(object sender, RoutedEventArgs e)
+        {
+            if(MessageBox.Show("Вы уверены что хотите удалить файл?", "Удаление файла", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                AdditionalFile SelectedFile = DG_AdditionalFiles.SelectedItem as AdditionalFile;
+                DG_AdditionalFiles.ItemsSource = null;
+                AdditionalFiles.Remove(SelectedFile);
+                DG_AdditionalFiles.ItemsSource = AdditionalFiles;
+
+                FileInfo FileInfoInstance = new FileInfo(SelectedFile.FilePath);
+                FileInfoInstance.Delete();
+            }
+        }
+
+        private void Btn_DeleteFileBig_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Вы уверены что хотите удалить файл?", "Удаление файла", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                AdditionalFile SelectedFile = DG_AdditionalFiles.SelectedItem as AdditionalFile;
+                DG_AdditionalFilesBig.ItemsSource = null;
+                AdditionalFilesBig.Remove(SelectedFile);
+                DG_AdditionalFilesBig.ItemsSource = AdditionalFilesBig;
+
+                FileInfo FileInfoInstance = new FileInfo(SelectedFile.FilePath);
+                FileInfoInstance.Delete();
+            }
+        }
+
+        private void Btn_AddFileBig_Click(object sender, RoutedEventArgs e)
+        {
+            string ApplicationName = "Booking";
+
+            string DocumentPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            string ApplicationFolderPath = Path.Combine(DocumentPath, ApplicationName);
+
+            if (!Directory.Exists(ApplicationFolderPath))
+            {
+                Directory.CreateDirectory(ApplicationFolderPath);
+            }
+
+            OpenFileDialog OpenFileDialogInstance = new OpenFileDialog();
+            OpenFileDialogInstance.Filter = "Документы (*.doc; *.docx; *.pdf)|*.doc;*.docx; *.pdf | Презентации (*.pptx)| *.pptx | Изображения (*.png; *.jpeg; *.jpg)| *.png; *.jpeg; *.jpg | Аудио (*.mp3) | *.mp3 | Видео (*.mp4) | *.mp4";
+            if (OpenFileDialogInstance.ShowDialog() == true)
+            {
+                string FilePath = OpenFileDialogInstance.FileName;
+                string FileName = Path.GetFileName(FilePath);
+
+                string TargetPath = Path.Combine(ApplicationFolderPath, FileName);
+
+                File.Copy(FilePath, TargetPath, true);
+
+                AdditionalFilesBig.Add(new AdditionalFile() { FileName = FileName, FilePath = TargetPath });
+            }
+
+            DG_AdditionalFilesBig.ItemsSource = null;
+            DG_AdditionalFilesBig.ItemsSource = AdditionalFilesBig;
+        }
+
+        private void Btn_AddFileVip_Click(object sender, RoutedEventArgs e)
+        {
+            string ApplicationName = "Booking";
+
+            string DocumentPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            string ApplicationFolderPath = Path.Combine(DocumentPath, ApplicationName);
+
+            if (!Directory.Exists(ApplicationFolderPath))
+            {
+                Directory.CreateDirectory(ApplicationFolderPath);
+            }
+
+            OpenFileDialog OpenFileDialogInstance = new OpenFileDialog();
+            OpenFileDialogInstance.Filter = "Документы (*.doc; *.docx; *.pdf)|*.doc;*.docx; *.pdf | Презентации (*.pptx)| *.pptx | Изображения (*.png; *.jpeg; *.jpg)| *.png; *.jpeg; *.jpg | Аудио (*.mp3) | *.mp3 | Видео (*.mp4) | *.mp4";
+            if (OpenFileDialogInstance.ShowDialog() == true)
+            {
+                string FilePath = OpenFileDialogInstance.FileName;
+                string FileName = Path.GetFileName(FilePath);
+
+                string TargetPath = Path.Combine(ApplicationFolderPath, FileName);
+
+                File.Copy(FilePath, TargetPath, true);
+
+                AdditionalFilesVip.Add(new AdditionalFile() { FileName = FileName, FilePath = TargetPath });
+            }
+
+            DG_AdditionalFilesVip.ItemsSource = null;
+            DG_AdditionalFilesVip.ItemsSource = AdditionalFilesVip;
+        }
+
+        private void Btn_DeleteFileVip_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Вы уверены что хотите удалить файл?", "Удаление файла", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                AdditionalFile SelectedFile = DG_AdditionalFiles.SelectedItem as AdditionalFile;
+                DG_AdditionalFilesVip.ItemsSource = null;
+                AdditionalFilesVip.Remove(SelectedFile);
+                DG_AdditionalFilesVip.ItemsSource = AdditionalFilesVip;
+
+                FileInfo FileInfoInstance = new FileInfo(SelectedFile.FilePath);
+                FileInfoInstance.Delete();
+            }
+        }
+
+        //Обработка событий
+        private void DG_Time_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var SelectedItem = DG_Time.SelectedItem as TimeClass;
+            TB_StartTime.Text = SelectedItem.Time;
+        }
+
+        
     }
 }
