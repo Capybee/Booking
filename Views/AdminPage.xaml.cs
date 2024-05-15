@@ -31,6 +31,8 @@ namespace Booking.Views
         private DB_BookingEntities4 Entities = new DB_BookingEntities4();
         private List<UsersCollection> UsersCollectionInstance = new List<UsersCollection>();
         private bool IsUserCreating = false;
+        private List<Request> Requests = new List<Request>();
+        private List<Event> Events = new List<Event>();
 
         public AdminPage(Admin AdminInstance)
         {
@@ -41,6 +43,10 @@ namespace Booking.Views
             TOCollection = Entities.TO.ToList();
             ConvertToUsersCollection();
             DG_Users.ItemsSource = UsersCollectionInstance;
+            CreateRequestsList();
+            DG_Requests.ItemsSource = Requests;
+            Events = Entities.Event.ToList();
+            DG_Events.ItemsSource = Events;
         }
 
         //Методы
@@ -342,6 +348,23 @@ namespace Booking.Views
 
             return true;
         }
+
+        private void CreateRequestsList()
+        {
+            Requests.Clear();
+
+            List<Request> TempRequests = Entities.Request.ToList();
+
+            foreach (Request request in TempRequests) 
+            {
+                if (!request.Approved) 
+                {
+                    Requests.Add(request);
+                }
+            }
+        }
+
+
 
         //Placeholder
         private void FIOGotFocus(object sender, RoutedEventArgs e)
@@ -665,6 +688,67 @@ namespace Booking.Views
             }
         }
 
+        private void Btn_Approve_Click(object sender, RoutedEventArgs e)
+        {
+            Request SelectedRequest = DG_Requests.SelectedItem as Request;
+
+            foreach (var request in Entities.Request)
+            {
+                if (request == SelectedRequest)
+                {
+                    request.Approved = true;
+                }
+            }
+
+            Event NewEvent = new Event()
+            {
+                Title = SelectedRequest.Title,
+                TimeStart = SelectedRequest.StartTime,
+                TimeEnd = SelectedRequest.EndTime,
+                AdditionalMaterials = SelectedRequest.AndditionalMaterial,
+                Equipment = SelectedRequest.Equipment,
+                Hall_Id = SelectedRequest.Hall_Id,
+                User_Id = SelectedRequest.User_Id,
+                Date = SelectedRequest.Date
+            };
+
+            Entities.Event.Add(NewEvent);
+
+            Entities.SaveChanges();
+            MessageBox.Show("Заявка одобрена!", "Успех!", MessageBoxButton.OK);
+
+            CreateRequestsList();
+
+            DG_Requests.ItemsSource = null;
+            DG_Requests.ItemsSource = Requests;
+        }
+
+        private void Btn_Reject_Click(object sender, RoutedEventArgs e)
+        {
+            Request SelectedRequest = DG_Requests.SelectedItem as Request;
+
+            bool Coincidence = false;
+
+            foreach (var request in Entities.Request)
+            {
+                if (request == SelectedRequest)
+                {
+                    Coincidence = true;
+                }
+            }
+
+            if(Coincidence)
+            {
+                Entities.Request.Remove(SelectedRequest);
+                Entities.SaveChanges();
+
+                MessageBox.Show("Заявка успешно отклонена!", "Успех!", MessageBoxButton.OK);
+
+                DG_Requests.ItemsSource = null;
+                DG_Requests.ItemsSource = Requests;
+            }
+        }
+
         //Обработка событий
         private void DG_Users_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -698,5 +782,7 @@ namespace Booking.Views
                 }
             }
         }
+
+        
     }
 }
