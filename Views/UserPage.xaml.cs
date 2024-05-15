@@ -24,6 +24,7 @@ namespace Booking.Views
     /// </summary>
     public partial class UserPage : Page
     {
+        User ThisUser;
         SolidColorBrush MyBrush = (SolidColorBrush)Application.Current.Resources["PlaceholderGrey"];
         List<DateTime> Dates = new List<DateTime>();
         List<EventDate> EventDates = new List<EventDate>();
@@ -38,7 +39,7 @@ namespace Booking.Views
         List<string> EventEndTimeBig = new List<string>();
         List<string> EventEndTimeVip = new List<string>();
 
-        public UserPage()
+        public UserPage(User thisUser)
         {
             InitializeComponent();
 
@@ -69,6 +70,7 @@ namespace Booking.Views
             Tb_EventTitleVip.Foreground = MyBrush;
             TB_AdditionalEquipmentVip.Text = "Укажите необходимое оборудование";
             TB_AdditionalEquipmentVip.Foreground = MyBrush;
+            ThisUser = thisUser;
         }
 
         //Методы
@@ -252,6 +254,25 @@ namespace Booking.Views
                 }
             }
             return -1;
+        }
+
+        private void InputsClear()
+        {
+            Tb_EventTitle.Clear();
+            Tb_EventTitleBig.Clear();
+            Tb_EventTitleVip.Clear();
+            TB_AdditionalEquipment.Clear();
+            TB_AdditionalEquipmentBig.Clear();
+            TB_AdditionalEquipmentVip.Clear();
+            TB_StartTime.Clear();
+            TB_StartTimeBig.Clear();
+            TB_StartTimeVip.Clear();
+            DG_AdditionalFiles.ItemsSource = null;
+            DG_AdditionalFilesBig.ItemsSource = null;
+            DG_AdditionalFilesVip.ItemsSource = null;
+            CB_EndTime.ItemsSource = null;
+            CB_EndTimeBig.ItemsSource = null;
+            CB_EndTimeVip.ItemsSource = null;
         }
 
         //Placeholder
@@ -611,6 +632,177 @@ namespace Booking.Views
             }
         }
 
+        private void Btn_SendRequest_Click(object sender, RoutedEventArgs e)
+        {
+            if (Validate(Tb_EventTitle.Text, 58, 10, "/\\*\\-+!@#$%^&_=\\{\\}") == -1)
+            {
+                if (TB_StartTime.Text != null)
+                {
+                    if (CB_EndTime.SelectedItem != null)
+                    {
+                        string AdditionalFilesStr = "";
+
+                        foreach (var file in AdditionalFiles)
+                        {
+                            AdditionalFilesStr += file.FilePath + ";";
+                        }
+
+                        TimeSpan TimeStart;
+                        TimeSpan TimeEnd;
+
+                        string StartTimeStr = TB_StartTime.Text;
+                        var StartTimeSplit = StartTimeStr.Split(':');
+                        TimeStart = new TimeSpan(Convert.ToInt32(StartTimeSplit[0]), Convert.ToInt32(StartTimeSplit[1]), 0);
+
+                        string EndTimeStr = CB_EndTime.Text;
+                        var EndTimeSplit = EndTimeStr.Split(':');
+                        TimeEnd = new TimeSpan(Convert.ToInt32(EndTimeSplit[0]), Convert.ToInt32(EndTimeSplit[1]), Convert.ToInt32(EndTimeSplit[2]));
+
+                        Request NewRequest = new Request()
+                        {
+                            Title = Tb_EventTitle.Text,
+                            User_Id = ThisUser.Id,
+                            Date = SelectedDate.Date,
+                            StartTime = TimeStart,
+                            EndTime = TimeEnd,
+                            Equipment = TB_AdditionalEquipment.Text,
+                            AndditionalMaterial = AdditionalFilesStr,
+                            Hall_Id = 1,
+                            Admin_Id = 1,
+                            Approved = false
+                        };
+
+                        try
+                        {
+                            Entities.Request.Add(NewRequest);
+                            Entities.SaveChanges();
+                            MessageBox.Show("Заявка на бронь успешно отправлена!", "Успех!", MessageBoxButton.OK);
+                            InputsClear();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Возникла ошибка: \n{ex.Message}", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                            throw;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Btn_SendRequestBig_Click(object sender, RoutedEventArgs e)
+        {
+            if (Validate(Tb_EventTitleBig.Text, 58, 10, "/\\*\\-+!@#$%^&_=\\{\\}") == -1)
+            {
+                if (TB_StartTimeBig.Text != null)
+                {
+                    if (CB_EndTimeBig.SelectedItem != null)
+                    {
+                        string AdditionalFilesStr = "";
+
+                        foreach (var file in AdditionalFiles)
+                        {
+                            AdditionalFilesStr += file.FilePath + ";";
+                        }
+
+                        TimeSpan TimeStart;
+                        TimeSpan TimeEnd;
+
+                        string StartTimeStr = TB_StartTimeBig.Text;
+                        var StartTimeSplit = StartTimeStr.Split(':');
+                        TimeStart = new TimeSpan(Convert.ToInt32(StartTimeSplit[0]), Convert.ToInt32(StartTimeSplit[1]), 0);
+
+                        string EndTimeStr = CB_EndTimeBig.Text;
+                        var EndTimeSplit = EndTimeStr.Split(':');
+                        TimeEnd = new TimeSpan(Convert.ToInt32(EndTimeSplit[0]), Convert.ToInt32(EndTimeSplit[1]), Convert.ToInt32(EndTimeSplit[2]));
+
+                        Request NewRequest = new Request()
+                        {
+                            Title = Tb_EventTitleBig.Text,
+                            User_Id = ThisUser.Id,
+                            Date = SelectedDateBig.Date,
+                            StartTime = TimeStart,
+                            EndTime = TimeEnd,
+                            Equipment = TB_AdditionalEquipmentBig.Text,
+                            AndditionalMaterial = AdditionalFilesStr,
+                            Hall_Id = 2,
+                            Admin_Id = 1,
+                            Approved = false
+                        };
+
+                        try
+                        {
+                            Entities.Request.Add(NewRequest);
+                            Entities.SaveChanges();
+                            MessageBox.Show("Заявка на бронь успешно отправлена!", "Успех!", MessageBoxButton.OK);
+                            InputsClear();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Возникла ошибка: \n{ex.Message}", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                            throw;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Btn_SendRequestVip_Click(object sender, RoutedEventArgs e)
+        {
+            if (Validate(Tb_EventTitleVip.Text, 58, 10, "/\\*\\-+!@#$%^&_=\\{\\}") == -1)
+            {
+                if (TB_StartTimeVip.Text != null)
+                {
+                    if (CB_EndTimeVip.SelectedItem != null)
+                    {
+                        string AdditionalFilesStr = "";
+
+                        foreach (var file in AdditionalFiles)
+                        {
+                            AdditionalFilesStr += file.FilePath + ";";
+                        }
+
+                        TimeSpan TimeStart;
+                        TimeSpan TimeEnd;
+
+                        string StartTimeStr = TB_StartTimeVip.Text;
+                        var StartTimeSplit = StartTimeStr.Split(':');
+                        TimeStart = new TimeSpan(Convert.ToInt32(StartTimeSplit[0]), Convert.ToInt32(StartTimeSplit[1]), 0);
+
+                        string EndTimeStr = CB_EndTimeVip.Text;
+                        var EndTimeSplit = EndTimeStr.Split(':');
+                        TimeEnd = new TimeSpan(Convert.ToInt32(EndTimeSplit[0]), Convert.ToInt32(EndTimeSplit[1]), Convert.ToInt32(EndTimeSplit[2]));
+
+                        Request NewRequest = new Request()
+                        {
+                            Title = Tb_EventTitleVip.Text,
+                            User_Id = ThisUser.Id,
+                            Date = SelectedDateVip.Date,
+                            StartTime = TimeStart,
+                            EndTime = TimeEnd,
+                            Equipment = TB_AdditionalEquipmentVip.Text,
+                            AndditionalMaterial = AdditionalFilesStr,
+                            Hall_Id = 2,
+                            Admin_Id = 1,
+                            Approved = false
+                        };
+
+                        try
+                        {
+                            Entities.Request.Add(NewRequest);
+                            Entities.SaveChanges();
+                            MessageBox.Show("Заявка на бронь успешно отправлена!", "Успех!", MessageBoxButton.OK);
+                            InputsClear();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Возникла ошибка: \n{ex.Message}", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                            throw;
+                        }
+                    }
+                }
+            }
+        }
+
         //Обработка событий
         private void DG_Time_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -683,5 +875,7 @@ namespace Booking.Views
 
             CB_EndTimeVip.ItemsSource = EventEndTimeVip;
         }
+
+        
     }
 }

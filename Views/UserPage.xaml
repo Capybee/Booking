@@ -172,7 +172,7 @@
                                 </DataGrid>
                             </Grid>
                         </Grid>
-                        <Button x:Name="Btn_SendRequestBig" Grid.Row="4" Content="Забронировать" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle}" Width="200" Height="45"/>
+                        <Button x:Name="Btn_SendRequestBig" Grid.Row="4" Content="Забронировать" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle}" Width="200" Height="45" Click="Btn_SendRequestBig_Click"/>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -255,7 +255,7 @@
                                 </DataGrid>
                             </Grid>
                         </Grid>
-                        <Button x:Name="Btn_SendRequestVip" Grid.Row="4" Content="Забронировать" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle}" Width="200" Height="45"/>
+                        <Button x:Name="Btn_SendRequestVip" Grid.Row="4" Content="Забронировать" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle}" Width="200" Height="45" Click="Btn_SendRequestVip_Click"/>
                     </Grid>
                 </Grid>
             </TabItem>

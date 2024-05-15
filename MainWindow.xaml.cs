@@ -59,7 +59,7 @@ namespace Booking
                 else if (AccessData == "Пользователь")
                 {
                     UserInstance = ReturnedInstance as User;
-                    Frame_Main.Navigate(new UserPage());
+                    Frame_Main.Navigate(new UserPage(UserInstance));
                     Btn_BackOrSingIn.Content = "Выйти";
                     IsAuthorized = true;
                 }
