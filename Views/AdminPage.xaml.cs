@@ -33,6 +33,7 @@ namespace Booking.Views
         private bool IsUserCreating = false;
         private List<Request> Requests = new List<Request>();
         private List<Event> Events = new List<Event>();
+        private List<ModifiedRequest> ModifiedRequests = new List<ModifiedRequest>();
 
         public AdminPage(Admin AdminInstance)
         {
@@ -359,7 +360,28 @@ namespace Booking.Views
             {
                 if (!request.Approved) 
                 {
-                    Requests.Add(request);
+                    List<User> TempUsersList = Entities.User.ToList();
+                    List<Hall> TempHallList = Entities.Hall.ToList();
+                    string UserFIO = "";
+                    string HallTitle = "";
+
+                    foreach (User user in TempUsersList) 
+                    {
+                        if (request.User_Id == user.Id) 
+                        {
+                            UserFIO = user.FIO;
+                        }
+                    }
+
+                    foreach (var hall in TempHallList)
+                    {
+                        if (request.Id == hall.Id)
+                        {
+                            HallTitle = hall.Name;
+                        }
+                    }
+
+
                 }
             }
         }
