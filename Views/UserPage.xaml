@@ -89,7 +89,7 @@
                                 </DataGrid>
                             </Grid>
                         </Grid>
-                        <Button x:Name="Btn_SendRequest" Grid.Row="4" Content="Забронировать" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle}" Width="200" Height="45"/>
+                        <Button x:Name="Btn_SendRequest" Grid.Row="4" Content="Забронировать" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle}" Width="200" Height="45" Click="Btn_SendRequest_Click"/>
                     </Grid>
                 </Grid>
             </TabItem>

@@ -687,6 +687,22 @@ namespace Booking.Views
                     }
                 }
             }
+            else if (Validate(Tb_EventTitle.Text, 58, 10, "/\\*\\-+!@#$%^&_=\\{\\}") == 0)
+            {
+                MessageBox.Show("Необходимо указать название мероприятия!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (Validate(Tb_EventTitle.Text, 58, 10, "/\\*\\-+!@#$%^&_=\\{\\}") == 1)
+            {
+                MessageBox.Show("Название мероприятия не может быть длиннее 58-и символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (Validate(Tb_EventTitle.Text, 58, 10, "/\\*\\-+!@#$%^&_=\\{\\}") == 2)
+            {
+                MessageBox.Show("Название мероприятия не может быть короче 10-и символов", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (Validate(Tb_EventTitle.Text, 58, 10, "/\\*\\-+!@#$%^&_=\\{\\}") == 3)
+            {
+                MessageBox.Show("Название мероприятия не может содержать перечисленные символы: /*-+!@#$%^&_={}", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Btn_SendRequestBig_Click(object sender, RoutedEventArgs e)

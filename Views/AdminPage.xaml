@@ -17,7 +17,7 @@
                             <DataGridTextColumn Binding="{Binding Path=Title}" Header="Название мероприятия" Width="2*"/>
                             <DataGridTextColumn Binding="{Binding Path=StartTime}" Header="Время начала" Width="1*"/>
                             <DataGridTextColumn Binding="{Binding Path=EndTime}" Header="Время окончания" Width="1*"/>
-                            <DataGridTextColumn Binding="{Binding Path=Hall_Id}" Header="Зал" Width="1*"/>
+                            <DataGridTextColumn Binding="{Binding Path=Hallя}" Header="Зал" Width="1*"/>
                         </DataGrid.Columns>
                         <DataGrid.RowDetailsTemplate>
                             <DataTemplate>
@@ -28,9 +28,9 @@
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="50"/>
                                     </Grid.RowDefinitions>
-                                    <TextBox x:Name="TB_WhoReservation" Text="{Binding Path=User_Id}" Grid.Row="0" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="700" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
+                                    <TextBox x:Name="TB_WhoReservation" Text="{Binding Path=SendingUser}" Grid.Row="0" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="700" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
                                     <TextBox x:Name="TB_AdditionalEqipment" Text="{Binding Path=Equipment}" Grid.Row="1" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="800" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
-                                    <TextBox x:Name="TB_Files" Text="{Binding Path=AndditionalMaterial}" Grid.Row="2" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="800" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
+                                    <TextBox x:Name="TB_Files" Text="{Binding Path=AdditionalMaterials}" Grid.Row="2" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="800" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
                                     <Grid Grid.Row="3">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -106,11 +106,11 @@
             </TabItem>
             <TabItem Header="Мероприятия" Style="{DynamicResource TabItemStyle}">
                 <Grid Style="{DynamicResource GridStyle}">
-                    <DataGrid x:Name="DG_Events" Style="{DynamicResource DataGridStyle}" AutoGenerateColumns="False">
+                    <DataGrid x:Name="DG_Events" Style="{DynamicResource DataGridStyle}" CanUserAddRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Path=Title}" Header="Название мероприятия" Width="2*"/>
                             <DataGridTextColumn Binding="{Binding Path=Date}" Header="Дата" Width="0.5*"/>
-                            <DataGridTextColumn Binding="{Binding Path=TimeStart}" Header="Время" Width="0.5*"/>
+                            <DataGridTextColumn Binding="{Binding Path=StartTime}" Header="Время" Width="0.5*"/>
                         </DataGrid.Columns>
                         <DataGrid.RowDetailsTemplate>
                             <DataTemplate>
@@ -120,15 +120,15 @@
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
-                                    <TextBox x:Name="TB_WhoReservation" Text="{Binding Path=User_Id}" Grid.Row="0" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="700" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
+                                    <TextBox x:Name="TB_WhoReservation" Text="{Binding Path=SendingUser}" Grid.Row="0" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="700" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
                                     <TextBox x:Name="TB_AdditionalEqipment" Text="{Binding Path=Equipment}" Grid.Row="1" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="800" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
-                                    <DataGrid Style="{DynamicResource DataGridStyle}" Grid.Row="2" Width="800" Height="500">
+                                    <DataGrid x:Name="DG_AdditionalMaterials" Loaded="DG_AdditionalMaterials_Loaded" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding AdditionalMaterials}" Style="{DynamicResource DataGridStyle}" Grid.Row="2" Width="800" Height="500">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Название файла" Width="2*"/>
+                                            <DataGridTextColumn Binding="{Binding Path=FileName}" Header="Название файла" Width="2*"/>
                                             <DataGridTemplateColumn>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Button x:Name="Btn_Download" Content="Скачать" Margin="2" Style="{DynamicResource ButtonStyle}"/>
+                                                        <Button x:Name="Btn_Download" Content="Скачать" Margin="2" Style="{DynamicResource ButtonStyle}" Click="Btn_Download_Click"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>

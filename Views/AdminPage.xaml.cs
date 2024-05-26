@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using Booking.DB;
 using Booking.MyClasses;
 using System.Text.RegularExpressions;
+using Microsoft.Win32;
+using System.IO;
 
 namespace Booking.Views
 {
@@ -34,6 +36,8 @@ namespace Booking.Views
         private List<Request> Requests = new List<Request>();
         private List<Event> Events = new List<Event>();
         private List<ModifiedRequest> ModifiedRequests = new List<ModifiedRequest>();
+        private List<ModifiedEvent> ModifiedEvents = new List<ModifiedEvent>();
+        private DataGrid DG_AdditionalMaterials;
 
         public AdminPage(Admin AdminInstance)
         {
@@ -45,9 +49,10 @@ namespace Booking.Views
             ConvertToUsersCollection();
             DG_Users.ItemsSource = UsersCollectionInstance;
             CreateRequestsList();
-            DG_Requests.ItemsSource = Requests;
+            DG_Requests.ItemsSource = ModifiedRequests;
             Events = Entities.Event.ToList();
-            DG_Events.ItemsSource = Events;
+            CreateEventsList();
+            DG_Events.ItemsSource = ModifiedEvents;
         }
 
         //Методы
@@ -375,14 +380,96 @@ namespace Booking.Views
 
                     foreach (var hall in TempHallList)
                     {
-                        if (request.Id == hall.Id)
+                        if (request.Hall_Id == hall.Id)
                         {
                             HallTitle = hall.Name;
                         }
                     }
 
+                    string FileNames = "";
 
+                    var AdditionalMaterialsSplit = request.AndditionalMaterial.Split(';');
+
+                    for (int i = 0; i < AdditionalMaterialsSplit.Length; i++)
+                    {
+                        string FilePath = AdditionalMaterialsSplit[i];
+                        var FilePathSplit = AdditionalMaterialsSplit[i].Split('\\');
+                        FileNames += FilePathSplit[FilePathSplit.Length - 1] + "\n";
+                    }
+
+                    ModifiedRequests.Add(new ModifiedRequest()
+                    {
+                        Id = request.Id,
+                        Title = request.Title,
+                        Date = request.Date.ToString("D"),
+                        StartTime = request.StartTime.ToString(),
+                        EndTime = request.EndTime.ToString(),
+                        Equipment = request.Equipment,
+                        AdditionalMaterials = FileNames,
+                        Hall = HallTitle,
+                        SendingUser = UserFIO
+                    });
                 }
+            }
+        }
+
+        private void CreateEventsList()
+        {
+            ModifiedEvents.Clear();
+
+            foreach (var MyEvent in Events)
+            {
+                string SendingUser = "";
+                string HallTitle = "";
+
+                List<User> TempUsersList = Entities.User.ToList();
+                List<Hall> TempHallList = Entities.Hall.ToList();
+
+                foreach (User user in TempUsersList)
+                {
+                    if (MyEvent.User_Id == user.Id)
+                    {
+                        SendingUser = user.FIO;
+                    }
+                }
+
+                foreach (var hall in TempHallList)
+                {
+                    if (MyEvent.Hall_Id == hall.Id)
+                    {
+                        HallTitle = hall.Name;
+                    }
+                }
+
+                List<AdditionalFile> AdditionalFilesCollection = new List<AdditionalFile>();
+
+                var AdditionalMaterialsSplit = MyEvent.AdditionalMaterials.Split(';');
+
+                for (int i = 0; i < AdditionalMaterialsSplit.Length; i++)
+                {
+                    string FilePath = AdditionalMaterialsSplit[i];
+                    var FilePathSplit = AdditionalMaterialsSplit[i].Split('\\');
+                    AdditionalFilesCollection.Add(new AdditionalFile() 
+                    {
+                        FilePath = FilePath,
+                        FileName = FilePathSplit[FilePathSplit.Length - 1]
+                    });
+                }
+
+
+
+                ModifiedEvents.Add(new ModifiedEvent() 
+                {
+                    Id = MyEvent.Id,
+                    Title = MyEvent.Title,
+                    Date = MyEvent.Date.ToString("D"),
+                    StartTime = MyEvent.TimeStart.ToString(),
+                    EndTime = MyEvent.TimeEnd.ToString(),
+                    Equipment = MyEvent.Equipment,
+                    AdditionalMaterials = AdditionalFilesCollection,
+                    Hall = HallTitle,
+                    SendingUser = SendingUser,
+                });
             }
         }
 
@@ -712,7 +799,17 @@ namespace Booking.Views
 
         private void Btn_Approve_Click(object sender, RoutedEventArgs e)
         {
-            Request SelectedRequest = DG_Requests.SelectedItem as Request;
+            ModifiedRequest SelectedModifiedRequest = DG_Requests.SelectedItem as ModifiedRequest;
+
+            Request SelectedRequest = new Request();
+
+            List<Request> TempRequests = Entities.Request.ToList();
+
+            foreach (var request in TempRequests)
+            {
+                if (request.Id == SelectedModifiedRequest.Id)
+                    SelectedRequest = request;
+            }
 
             foreach (var request in Entities.Request)
             {
@@ -771,6 +868,34 @@ namespace Booking.Views
             }
         }
 
+        private void Btn_Download_Click(object sender, RoutedEventArgs e)
+        {
+            AdditionalFile SelectedFile = DG_AdditionalMaterials.SelectedItem as AdditionalFile;
+
+            string FilePath = SelectedFile.FilePath;
+
+            SaveFileDialog SaveFileDialogInstance = new SaveFileDialog();
+            SaveFileDialogInstance.FileName = System.IO.Path.GetFileName(FilePath);
+            SaveFileDialogInstance.Filter = "Документы (*.doc; *.docx; *.pdf)|*.doc;*.docx; *.pdf | Презентации (*.pptx)| *.pptx | Изображения (*.png; *.jpeg; *.jpg)| *.png; *.jpeg; *.jpg | Аудио (*.mp3) | *.mp3 | Видео (*.mp4) | *.mp4";
+            
+            if (SaveFileDialogInstance.ShowDialog() == true)
+            {
+                string DirectoryPath = SaveFileDialogInstance.FileName;
+
+                try
+                {
+                    File.Copy(FilePath, DirectoryPath, true);
+
+                    MessageBox.Show("Файл успешно сохранен!", "Успех!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Произошла непредвиденная ошибка: \n" + ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    throw;
+                }
+            }
+        }
+
         //Обработка событий
         private void DG_Users_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -805,6 +930,9 @@ namespace Booking.Views
             }
         }
 
-        
+        private void DG_AdditionalMaterials_Loaded(object sender, RoutedEventArgs e)
+        {
+            DG_AdditionalMaterials = sender as DataGrid;
+        }
     }
 }
