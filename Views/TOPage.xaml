@@ -12,11 +12,11 @@
         <TabControl FontSize="22">
             <TabItem Header="Мероприятия" Style="{DynamicResource TabItemStyle}">
                 <Grid Style="{DynamicResource GridStyle}">
-                    <DataGrid Style="{DynamicResource DataGridStyle}">
+                    <DataGrid x:Name="DG_Events" Style="{DynamicResource DataGridStyle}" CanUserAddRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Название мероприятия" Width="2*"/>
-                            <DataGridTextColumn Header="Дата" Width="0.5*"/>
-                            <DataGridTextColumn Header="Время" Width="0.5*"/>
+                            <DataGridTextColumn Binding="{Binding Path=Title}" Header="Название мероприятия" Width="2*"/>
+                            <DataGridTextColumn Binding="{Binding Path=Date}" Header="Дата" Width="0.5*"/>
+                            <DataGridTextColumn Binding="{Binding Path=StartTime}" Header="Время" Width="0.5*"/>
                         </DataGrid.Columns>
                         <DataGrid.RowDetailsTemplate>
                             <DataTemplate>
@@ -26,15 +26,15 @@
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
-                                    <TextBox x:Name="TB_WhoReservation" Grid.Row="0" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="700" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
-                                    <TextBox x:Name="TB_AdditionalEqipment" Grid.Row="1" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="800" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
-                                    <DataGrid Style="{DynamicResource DataGridStyle}" Grid.Row="2" Width="800" Height="500">
+                                    <TextBox x:Name="TB_WhoReservation" Text="{Binding Path=SendingUser}" Grid.Row="0" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="700" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
+                                    <TextBox x:Name="TB_AdditionalEqipment" Text="{Binding Path=Equipment}" Grid.Row="1" Style="{DynamicResource TextBoxStyle}" Margin="3" Width="800" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True"/>
+                                    <DataGrid x:Name="DG_AdditionalMaterials" Loaded="DG_AdditionalMaterials_Loaded" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding AdditionalMaterials}" Style="{DynamicResource DataGridStyle}" Grid.Row="2" Width="800" Height="500">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Название файла" Width="2*"/>
+                                            <DataGridTextColumn Binding="{Binding Path=FileName}" Header="Название файла" Width="2*"/>
                                             <DataGridTemplateColumn>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Button x:Name="Btn_Download" Content="Скачать" Margin="2" Style="{DynamicResource ButtonStyle}"/>
+                                                        <Button x:Name="Btn_Download" Content="Скачать" Margin="2" Style="{DynamicResource ButtonStyle}" Click="Btn_Download_Click"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -53,9 +53,10 @@
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="0" BorderThickness="0,0,1,0" BorderBrush="Black">
-                        <DataGrid Style="{DynamicResource DataGridStyle}">
+                        <DataGrid x:Name="DG_Users" Style="{DynamicResource DataGridStyle}" SelectionChanged="DG_Users_SelectionChanged" AutoGenerateColumns="False" CanUserAddRows="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ФИО" Width="*"/>
+                                <DataGridTextColumn Binding="{Binding Path=FIO}" Header="ФИО" Width="2.8*"/>
+                                <DataGridTextColumn Binding="{Binding Path=Role}" Header="Роль" Width="1*"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
@@ -69,25 +70,35 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="ФИО" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock Text="Логин" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1"/>
                         <TextBlock Text="Пароль" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock Text="Должность" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="3"/>
+                        <TextBlock Text="Роль" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="3"/>
+                        <TextBlock Text="Должность" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="4"/>
                         <TextBox x:Name="TB_FIO" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="700" Height="45" Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center"/>
                         <TextBox x:Name="TB_Login" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="700" Height="45" Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center"/>
                         <TextBox x:Name="TB_Password" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Width="700" Height="45" Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center"/>
-                        <TextBox x:Name="TB_Post" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Width="700" Height="45" Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center"/>
-                        <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                        <Grid Grid.Column="1" Grid.Row="3" Margin="40,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <RadioButton Style="{DynamicResource RadioButtonStyle}" GroupName="Role" x:Name="RB_TO" Content="ТО" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <RadioButton Style="{DynamicResource RadioButtonStyle}" GroupName="Role" x:Name="RB_User" Content="Пользователь" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Grid>
+                        <TextBox x:Name="TB_Post" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Width="700" Height="45" Style="{DynamicResource TextBoxStyle}" VerticalContentAlignment="Center"/>
+                        <Grid Grid.Row="5" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="Btn_Add" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Добавить" Grid.Column="0"/>
-                            <Button x:Name="Btn_Change" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Редактировать" Grid.Column="1"/>
-                            <Button x:Name="Btn_Delete" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Удалить" Grid.Column="2"/>
+                            <Button x:Name="Btn_Add" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Добавить" Grid.Column="0" Click="Btn_Add_Click"/>
+                            <Button x:Name="Btn_Change" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Редактировать" Grid.Column="1" Click="Btn_Change_Click"/>
+                            <Button x:Name="Btn_Delete" Margin="3" Style="{DynamicResource ButtonStyle}" Content="Удалить" Grid.Column="2" Click="Btn_Delete_Click"/>
                         </Grid>
                     </Grid>
                 </Grid>

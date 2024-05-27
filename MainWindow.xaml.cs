@@ -66,7 +66,7 @@ namespace Booking
                 else if (AccessData == "ТО")
                 {
                     TOInstance = ReturnedInstance as TO;
-                    Frame_Main.Navigate(new TOPage());
+                    Frame_Main.Navigate(new TOPage(TOInstance));
                     Btn_BackOrSingIn.Content = "Выйти";
                     IsAuthorized = true;
                 }
