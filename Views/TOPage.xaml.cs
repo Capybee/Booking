@@ -695,5 +695,23 @@ namespace Booking.Views
                 }
             }
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            DateTime Today = DateTime.Today;
+
+            string Message = "";
+
+            foreach (var @event in ModifiedEvents)
+            {
+                if (Today.ToString("D") == @event.Date)
+                {
+                    Message += $"Название: {@event.Title}. Время начала: {@event.StartTime} \n";
+                }
+            }
+
+            if (Message != "")
+                MessageBox.Show($"На сегодня запланированы следующие мероприятия: \n{Message}", "Внимание!", MessageBoxButton.OK, MessageBoxImage.None);
+        }
     }
 }

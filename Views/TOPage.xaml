@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:Booking.Views"
       mc:Ignorable="d" 
       d:DesignHeight="1080" d:DesignWidth="1880"
+      Loaded="Page_Loaded"
       Title="TOPage">
 
     <Grid Style="{DynamicResource UpGridStyle}">
