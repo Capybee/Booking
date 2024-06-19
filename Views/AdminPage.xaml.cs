@@ -456,8 +456,6 @@ namespace Booking.Views
                     });
                 }
 
-
-
                 ModifiedEvents.Add(new ModifiedEvent() 
                 {
                     Id = MyEvent.Id,
@@ -472,8 +470,6 @@ namespace Booking.Views
                 });
             }
         }
-
-
 
         //Placeholder
         private void FIOGotFocus(object sender, RoutedEventArgs e)
@@ -933,6 +929,24 @@ namespace Booking.Views
         private void DG_AdditionalMaterials_Loaded(object sender, RoutedEventArgs e)
         {
             DG_AdditionalMaterials = sender as DataGrid;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            DateTime Today = DateTime.Today;
+
+            string Message = "";
+
+            foreach (var @event in ModifiedEvents)
+            {
+                if (Today.ToString("D") == @event.Date)
+                {
+                    Message += $"Название: {@event.Title}. Время начала: {@event.StartTime} \n";
+                }
+            }
+
+            if (Message != "")
+                MessageBox.Show($"На сегодня запланированы следующие мероприятия: \n{Message}", "Внимание!", MessageBoxButton.OK, MessageBoxImage.None);
         }
     }
 }
